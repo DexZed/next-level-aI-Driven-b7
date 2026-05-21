@@ -28,3 +28,8 @@ export class UnauthorizedException extends HttpException {
     super(401, message);
   }
 }
+export class ForbiddenException extends HttpException {
+  constructor(message = "Forbidden") {
+    super(403, message);
+  }
+}

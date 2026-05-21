@@ -17,11 +17,13 @@ export class ExceptionHandler {
 
     process.on("SIGINT", async () => {
       console.log("SIGINT received");
+      
       await ExceptionHandler.shutdown(0);
     });
 
     process.on("SIGTERM", async () => {
       console.log("SIGTERM received");
+    
       await ExceptionHandler.shutdown(0);
     });
   }

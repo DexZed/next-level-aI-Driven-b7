@@ -13,7 +13,7 @@ class PostgresClient {
     return PostgresClient.instance;
   }
   public async connect(): Promise<void> {
-    console.log(this.connectionString);
+    //console.log(this.connectionString);
     if (this.isConnected) {
       return;
     }
