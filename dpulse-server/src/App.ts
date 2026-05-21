@@ -2,11 +2,17 @@ import type { Application } from "express";
 import chalk from "chalk";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import express from "express";
+import express, {
+  type NextFunction,
+  type Request,
+  type Response,
+} from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import type { RouteDefinition } from "./Routes";
 import routes from "./Routes";
+import { NotFoundException } from "./errors/HttpException";
+import { globalErrorHandler } from "./errors/GlobalError";
 
 const APP: Application = express();
 
@@ -47,7 +53,12 @@ function initRoutes(routes: RouteDefinition[]) {
   });
 }
 
-function initErrorHandler() {}
+function initErrorHandler() {
+  APP.use((req: Request, res: Response, next: NextFunction) => {
+    next(new NotFoundException(`Route ${req.originalUrl} not found`));
+  });
+  APP.use(globalErrorHandler);
+}
 
 function initServer(port: number) {
   APP.listen(port, () => {

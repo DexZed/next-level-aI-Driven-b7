@@ -1,34 +1,39 @@
-import pool from "../db/model";
+import dbClient from "../db/model";
 
 export class ExceptionHandler {
   private static shuttingDown = false;
-  public static init(): void {
-    process.on("uncaughtException", (err) => {
+  public static init() {
+    process.on("uncaughtException", async (err) => {
       console.error("Uncaught Exception:", err);
-      ExceptionHandler.shutdown(1);
+      await ExceptionHandler.shutdown(1);
     });
 
-    process.on("unhandledRejection", (reason) => {
+    if (process.listenerCount("unhandledRejection") === 0) {
+      process.on("unhandledRejection", (reason) => {
       console.error("Unhandled Rejection:", reason);
-      ExceptionHandler.shutdown(1);
     });
+      
+    }
 
-    process.on("SIGINT", () => {
+    process.on("SIGINT", async () => {
       console.log("SIGINT received");
-      ExceptionHandler.shutdown(0);
+      await ExceptionHandler.shutdown(0);
     });
 
-    process.on("SIGTERM", () => {
+    process.on("SIGTERM", async () => {
       console.log("SIGTERM received");
-      ExceptionHandler.shutdown(0);
+      await ExceptionHandler.shutdown(0);
     });
   }
-  private static shutdown(code: number): void {
+  private static async shutdown(code: number) {
     if (ExceptionHandler.shuttingDown) return;
     ExceptionHandler.shuttingDown = true;
 
     console.log("Shutting down gracefully...");
 
-    pool.end();
+    await dbClient.disconnect();
+    setTimeout(() => {
+      process.exit(code);
+    }, 1000);
   }
 }
