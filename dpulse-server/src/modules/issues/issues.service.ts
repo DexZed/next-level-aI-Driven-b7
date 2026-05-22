@@ -9,10 +9,11 @@ export async function createIssue(req:Request,res:Response){
 }
 
 export async function getIssues(req:Request,res:Response){
+    const {sort,type,status} = req.query;    
     res.json({
         success:true,
         message:'from getIssues',
-        data:req.body
+        data:req.body +"Query Params: " + sort + type + status
     })
 }
 

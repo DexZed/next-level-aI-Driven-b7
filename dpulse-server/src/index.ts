@@ -3,6 +3,6 @@ import dbClient from "./db/model";
 import { ExceptionHandler } from "./errors/ExceptionHandler";
 
 ExceptionHandler.init();
-dbClient.connect();
+await dbClient.connect();
 dbClient.status();
 init();

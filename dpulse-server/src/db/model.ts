@@ -13,12 +13,12 @@ class PostgresClient {
     return PostgresClient.instance;
   }
   public async connect(): Promise<void> {
-    //console.log(this.connectionString);
     if (this.isConnected) {
       return;
     }
     this.pool = new Pool.Pool({
       connectionString: this.connectionString,
+      ssl: true,
     });
     try {
       await this.pool.connect();
@@ -36,18 +36,25 @@ class PostgresClient {
     this.isConnected = false;
     console.info("Client Disconnected");
   }
-  public async status(){
+  public async status() {
     if (!this.isConnected) {
       return;
     }
-    this.pool.on('error', (err) => {
-      console.error('Unexpected error on idle client', err);
+    this.pool.on("error", (err) => {
+      console.error("Unexpected error on idle client", err);
       process.exit(-1);
     });
-    const result = await this.pool.query('SELECT NOW()');
+    const result = await this.pool.query("SELECT NOW()");
     console.log(result.rows[0]);
+  }
+  public async dbQuery() {
+    if (!this.isConnected) {
+      await this.connect();
+    }
+
+    return this.pool;
   }
 }
 
-const dbClient =  PostgresClient.getInstance();
+const dbClient = PostgresClient.getInstance();
 export default dbClient;
