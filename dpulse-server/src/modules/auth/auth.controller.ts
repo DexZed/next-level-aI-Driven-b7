@@ -3,12 +3,12 @@ import { login, logout, refresh, register } from "./auth.service";
 
 const authRouter = express.Router();
 
-authRouter.post("/auth/signup", register);
+authRouter.post("/signup", register);
 
-authRouter.post("/auth/login", login);
+authRouter.post("/login", login);
 
-authRouter.post("/auth/logout", logout);
+authRouter.post("/logout", logout);
 
-authRouter.post("/auth/refresh", refresh);
+authRouter.post("/refresh", refresh);
 
 export default authRouter;

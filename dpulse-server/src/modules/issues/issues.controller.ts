@@ -4,14 +4,14 @@ import { createIssue, deleteIssue, getIssue, getIssues, updateIssue } from "./is
 
 const issuesRouter = express.Router();
 
-issuesRouter.post('/issues',createIssue);
+issuesRouter.post('/',createIssue);
 
-issuesRouter.get('/issues',getIssues);
+issuesRouter.get('/',getIssues);
 
-issuesRouter.get('/issues/:id',getIssue);
+issuesRouter.get('/:id',getIssue);
 
-issuesRouter.patch('/issues/:id',updateIssue);
+issuesRouter.patch('/:id',updateIssue);
 
-issuesRouter.delete('/issues/:id',deleteIssue);
+issuesRouter.delete('/:id',deleteIssue);
 
 export default issuesRouter;
