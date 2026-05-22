@@ -19,3 +19,8 @@ export interface Issue {
     updated_at:Date
 
 }
+export interface ApiResponse {
+    success:boolean,
+    message:string,
+    data:any
+}
