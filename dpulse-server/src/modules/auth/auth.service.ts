@@ -1,6 +1,7 @@
 import dbClient from "../../db/model";
 import type { Request, Response } from "express";
-import { comparePassword, hashPassword } from "../../utils/utilities";
+import { comparePassword, generateToken, hashPassword } from "../../utils/utilities";
+import type { User } from "../../utils/interfaces";
 
 export async function register(req: Request, res: Response) {
   const user = req.body;
@@ -65,10 +66,19 @@ export async function login(req: Request, res: Response) {
         message: "Password is incorrect",
       });
     }
+    const token = generateToken({
+      id: user.rows[0].id,
+      name: user.rows[0].name,
+      role: user.rows[0].role,
+    });
     return res.json({
       success: true,
       message: "Login successful",
-      data: user.rows[0],
+      data: {
+        token: token,
+        user: user.rows[0],
+        
+      },
     });
   } catch (error) {
     console.error("Database Retrieval Error:", error);

@@ -1,10 +1,12 @@
 import type { NextFunction, Request, Response } from "express";
 import bcrypt from "bcrypt";
+import type { User } from "./interfaces";
+import jwt from "jsonwebtoken";
 
 type AsyncRouteHandler = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => Promise<any>;
 
 function asyncHandler(fn: AsyncRouteHandler) {
@@ -15,13 +17,24 @@ function asyncHandler(fn: AsyncRouteHandler) {
 
 export default asyncHandler;
 
-export function hashPassword(password:string){
+export function hashPassword(password: string) {
   const hashedPassword = bcrypt.hashSync(password, 10);
   return hashedPassword;
-
 }
 
-export async function comparePassword(password:string, hashedPassword:string){
+export async function comparePassword(
+  password: string,
+  hashedPassword: string,
+) {
   const isMatch = await bcrypt.compare(password, hashedPassword);
   return isMatch;
+}
+
+export function generateToken(
+  user: Omit<User, "password" | "created_at" | "updated_at" | "email">,
+) {
+  const token = jwt.sign(user, process.env.TOKEN as string, {
+    expiresIn: "7d",
+  });
+  return token;
 }
