@@ -1,11 +1,16 @@
 # dependencies (bun install)
 node_modules
-*.sql
+
 # output
 out
 dist
 *.tgz
 
+# custom project specific
+*.sql
+users.json
+misc.js
+misc.ts
 # code coverage
 coverage
 *.lcov

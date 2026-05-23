@@ -29,5 +29,5 @@
     // Project Specific
     "typeRoots": ["./src/types"]
   },
-  "include": ["./*.js", "src/**/*.ts", "test/**/*.ts", "src/types"]
+  "include": ["./*.js", "src/**/*.ts", "test/**/*.ts", "src/types", "src/utils/misc.js"]
 }
