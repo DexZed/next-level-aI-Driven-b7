@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import asyncHandler from "../../utils/utilities";
 import type { RequestExtended } from "../../types";
-import { createIssue, getIssues } from "../../db/IssueModel";
+import { createIssue, getIssueById, getIssues } from "../../db/IssueModel";
 import { findUserByEmail, findUsersByIds } from "../../db/UserModel";
 
 export const postIssue = asyncHandler(
@@ -66,13 +66,18 @@ export const  getAllIssues= asyncHandler(async(req: RequestExtended, res: Respon
   });
 });
 
-export async function getIssue(req: Request, res: Response) {
+export const  getOneIssues= asyncHandler(async(req: Request, res: Response) => {
+  const { id } = req.params;
+  if (!id) {
+    return res.status(400).json({ success: false, message: "Invalid issue id" });
+  }
+  const result = await getIssueById( id as unknown as number);
   res.json({
     success: true,
-    message: "from getIssue",
-    data: req.body,
+    message: "Data fetched successfully",
+    data: result,
   });
-}
+})
 
 export async function updateIssue(req: Request, res: Response) {
   res.json({
