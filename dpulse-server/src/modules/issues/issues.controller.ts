@@ -1,7 +1,7 @@
 import express from "express";
 import {
   postIssue,
-  deleteIssue,
+  deleteIssueHandler,
   getAllIssues,
   getOneIssues,
   updateIssueHandler,
@@ -18,6 +18,6 @@ issuesRouter.get("/:id", getOneIssues);
 
 issuesRouter.patch("/:id",jwtVerify, updateIssueHandler);
 
-issuesRouter.delete("/:id", deleteIssue);
+issuesRouter.delete("/:id",jwtVerify, deleteIssueHandler);
 
 export default issuesRouter;

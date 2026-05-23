@@ -1,9 +1,9 @@
 import type { Request, Response } from "express";
 import asyncHandler from "../../utils/utilities";
 import type { RequestExtended } from "../../types";
-import { createIssue, getIssueById, getIssues, updateIssue } from "../../db/IssueModel";
+import { createIssue, deleteIssue, getIssueById, getIssues, updateIssue } from "../../db/IssueModel";
 import { findUsersByIds } from "../../db/UserModel";
-import { ForbiddenException, NotFoundException } from "../../errors/HttpException";
+import { BadRequestException, ForbiddenException, NotFoundException } from "../../errors/HttpException";
 
 export const postIssue = asyncHandler(
   async (req: RequestExtended, res: Response) => {
@@ -11,9 +11,7 @@ export const postIssue = asyncHandler(
     const user = req.user;
 
     if (!title || !description || !type) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Invalid issue data" });
+      return new BadRequestException("Invalid issue data");
     }
     const result = await createIssue({
       title: title,
@@ -70,7 +68,7 @@ export const  getAllIssues= asyncHandler(async(req: RequestExtended, res: Respon
 export const  getOneIssues= asyncHandler(async(req: Request, res: Response) => {
   const { id } = req.params;
   if (!id) {
-    return res.status(400).json({ success: false, message: "Invalid issue id" });
+    return new BadRequestException("Invalid issue id");
   }
   const result = await getIssueById( id as unknown as number);
   res.json({
@@ -87,7 +85,7 @@ export const updateIssueHandler = asyncHandler(async (req: RequestExtended, res:
   const user = req.user;
  
   if (!title || !description || !type) {
-    return res.status(400).json({ success: false, message: "Missing required fields" });
+    return new BadRequestException("Invalid issue data");
   }
   const existingIssue = await getIssueById(id);
   if (!existingIssue) {
@@ -111,10 +109,18 @@ export const updateIssueHandler = asyncHandler(async (req: RequestExtended, res:
   });
 });
 
-export async function deleteIssue(req: Request, res: Response) {
+export const deleteIssueHandler = asyncHandler(async(req: RequestExtended, res: Response)=> {
+  const id = Number(req.params.id);
+  const user = req.user;
+  if (!id) {
+    return new BadRequestException("Invalid issue id");
+  }
+  if(user?.role !== "maintainer"){
+    return new ForbiddenException("You do not have permission to delete this issue");
+  }
+  await deleteIssue(id);
   res.json({
     success: true,
-    message: "from deleteIssue",
-    data: req.body,
+    message: "Issue deleted successfully",
   });
-}
+})
