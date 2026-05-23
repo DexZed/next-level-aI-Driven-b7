@@ -1,18 +1,23 @@
 export class HttpException extends Error {
   public status: number;
-  public override message: string;
 
   constructor(status: number, message: string) {
     super(message);
     this.status = status;
-    this.message = message;
 
-    // Maintain proper prototype chain
-    Object.setPrototypeOf(this, HttpException.prototype);
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, this.constructor);
+    }
+
+    Object.setPrototypeOf(this, new.target.prototype);
   }
 }
+
 export class BadRequestException extends HttpException {
-  constructor(message = "Bad Request") {
+  constructor(
+    message = "Bad Request",
+    public details?: any,
+  ) {
     super(400, message);
   }
 }
@@ -28,6 +33,7 @@ export class UnauthorizedException extends HttpException {
     super(401, message);
   }
 }
+
 export class ForbiddenException extends HttpException {
   constructor(message = "Forbidden") {
     super(403, message);
