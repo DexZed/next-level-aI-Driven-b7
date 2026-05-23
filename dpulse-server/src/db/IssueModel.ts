@@ -51,15 +51,14 @@ export async function getIssueById(id: number) {
   return result.rows[0];
 }
 
-export async function updateIssue(id: number, issue: Issue) {
+export async function updateIssue(id: number, issue: { title: string; description: string; type: string }) {
   const pool = await getQueryPool();
   const result = await pool.query(
-    "UPDATE issues SET title = $1, description = $2, type = $3 WHERE id = $4",
-    [issue.title, issue.description, issue.type, id],
+    "UPDATE issues SET title = $1, description = $2, type = $3 WHERE id = $4 RETURNING *",
+    [issue.title, issue.description, issue.type, id]
   );
   return result.rows[0];
 }
-
 export async function deleteIssue(id: number) {
   const pool = await getQueryPool();
   const result = await pool.query("DELETE FROM issues WHERE id = $1", [id]);

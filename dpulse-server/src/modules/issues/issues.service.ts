@@ -1,8 +1,9 @@
 import type { Request, Response } from "express";
 import asyncHandler from "../../utils/utilities";
 import type { RequestExtended } from "../../types";
-import { createIssue, getIssueById, getIssues } from "../../db/IssueModel";
-import { findUserByEmail, findUsersByIds } from "../../db/UserModel";
+import { createIssue, getIssueById, getIssues, updateIssue } from "../../db/IssueModel";
+import { findUsersByIds } from "../../db/UserModel";
+import { ForbiddenException, NotFoundException } from "../../errors/HttpException";
 
 export const postIssue = asyncHandler(
   async (req: RequestExtended, res: Response) => {
@@ -79,13 +80,36 @@ export const  getOneIssues= asyncHandler(async(req: Request, res: Response) => {
   });
 })
 
-export async function updateIssue(req: Request, res: Response) {
-  res.json({
+export const updateIssueHandler = asyncHandler(async (req: RequestExtended, res: Response) =>{
+  
+  const id = Number(req.params.id);
+  const { title, description, type } = req.body;
+  const user = req.user;
+ 
+  if (!title || !description || !type) {
+    return res.status(400).json({ success: false, message: "Missing required fields" });
+  }
+  const existingIssue = await getIssueById(id);
+  if (!existingIssue) {
+    throw new NotFoundException("Issue not found");
+  }
+  const isMaintainer = user?.role === "maintainer";
+  const isOwner = existingIssue.reporter_id === user?.id;
+  const isOpen = existingIssue.status === "open";
+  const isAllowedContributor = user?.role === "contributor" && isOwner && isOpen;
+
+  if (!isMaintainer && !isAllowedContributor) {
+    throw new ForbiddenException(
+      "You do not have permission to update this issue. Contributors can only edit their own open issues."
+    );
+  }
+ const updatedIssue = updateIssue(id, { title, description, type });
+   return res.json({
     success: true,
-    message: "from updateIssue",
-    data: req.body,
+    message: "Issue updated successfully",
+    data: updatedIssue,
   });
-}
+});
 
 export async function deleteIssue(req: Request, res: Response) {
   res.json({

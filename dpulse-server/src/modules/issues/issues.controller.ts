@@ -4,7 +4,7 @@ import {
   deleteIssue,
   getAllIssues,
   getOneIssues,
-  updateIssue,
+  updateIssueHandler,
 } from "./issues.service";
 import jwtVerify from "../../middlewares/jwt.validation";
 
@@ -16,7 +16,7 @@ issuesRouter.get("/", getAllIssues);
 
 issuesRouter.get("/:id", getOneIssues);
 
-issuesRouter.patch("/:id", updateIssue);
+issuesRouter.patch("/:id",jwtVerify, updateIssueHandler);
 
 issuesRouter.delete("/:id", deleteIssue);
 
