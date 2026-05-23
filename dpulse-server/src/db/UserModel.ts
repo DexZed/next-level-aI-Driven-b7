@@ -1,3 +1,4 @@
+import type { User } from "../utils/interfaces";
 import dbClient from "./model";
 
 export async function getQueryPool() {
@@ -6,7 +7,7 @@ export async function getQueryPool() {
   return pool;
 }
 
-export async function createUser(user: any) {
+export async function createUser(user: User) {
   const pool = await getQueryPool();
   const result = await pool.query(
     "INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4) RETURNING *",

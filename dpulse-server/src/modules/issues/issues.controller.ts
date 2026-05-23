@@ -1,10 +1,10 @@
 import express from "express";
-import { createIssue, deleteIssue, getIssue, getIssues, updateIssue } from "./issues.service";
+import { postIssue, deleteIssue, getIssue, getIssues, updateIssue } from "./issues.service";
 
 
 const issuesRouter = express.Router();
 
-issuesRouter.post('/',createIssue);
+issuesRouter.post('/',postIssue);
 
 issuesRouter.get('/',getIssues);
 
