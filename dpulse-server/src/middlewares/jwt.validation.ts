@@ -17,7 +17,7 @@ const jwtVerify = asyncHandler(
     const token = authHeader.split(" ")[1];
     const decoded = jwt.verify(
       token!,
-      process.env.ACCESS_TOKEN!,
+      process.env.TOKEN!,
       (err: any, decoded: any) => {
         err
           ? new UnauthorizedException("Invalid or expired token")
@@ -27,3 +27,4 @@ const jwtVerify = asyncHandler(
     );
   },
 );
+export default jwtVerify;
