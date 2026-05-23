@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 import asyncHandler from "../../utils/utilities";
 import type { RequestExtended } from "../../types";
 import { createIssue, getIssues } from "../../db/IssueModel";
-import { findUserByEmail } from "../../db/UserModel";
+import { findUserByEmail, findUsersByIds } from "../../db/UserModel";
 
 export const postIssue = asyncHandler(
   async (req: RequestExtended, res: Response) => {
@@ -28,23 +28,43 @@ export const postIssue = asyncHandler(
   },
 );
 
-export async function getAllIssues(req: RequestExtended, res: Response) {
-  const { sort, type, status } = req.query;
-  const user = req.user;
-  const queryParams = {
-    sort: String(sort || ""),
-    type: String(type || ""),
-    status: String(status || ""),
-  };
-  const issues = await getIssues(queryParams);
-  const reporterData = await findUserByEmail(user?.email);
+export const  getAllIssues= asyncHandler(async(req: RequestExtended, res: Response) => {
   
-  res.json({
-    success: true,
-    message: "from getIssues",
-    data: req.body + "Query Params: " + sort + type + status,
+  const { sort, type, status } = req.query;
+
+  const queryParams = {
+    sort: sort ? String(sort) : undefined,
+    type: type ? String(type) : undefined,
+    status: status ? String(status) : undefined,
+  };
+
+  const issues = await getIssues(queryParams);
+
+  const reporterIds = Array.from(
+    new Set(issues.map((issue: any) => issue.reporter_id).filter(Boolean))
+  );
+
+  const users = await findUsersByIds(reporterIds as number[]);
+
+  const userMap = new Map(users.map(user => [user.id, user]));
+
+  const formattedData = issues.map((issue: any) => {
+    const reporter = userMap.get(issue.reporter_id) || null;
+    const { reporter_id, ...issueDetails } = issue; 
+    return {
+      ...issueDetails,
+      reporter: reporter ? {
+        id: reporter.id,
+        name: reporter.name,
+        role: reporter.role
+      } : null
+    };
   });
-}
+  return res.json({
+    success: true,
+    data: formattedData
+  });
+});
 
 export async function getIssue(req: Request, res: Response) {
   res.json({

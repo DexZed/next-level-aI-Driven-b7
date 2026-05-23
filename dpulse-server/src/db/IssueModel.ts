@@ -13,12 +13,35 @@ export async function createIssue(
 }
 
 export async function getIssues(queryParams?: {
-  sort: string;
-  type: string;
-  status: string;
+  sort?: string; 
+  type?: string; 
+  status?: string;
 }) {
+  const conditions: string[] = [];
+  const values: any[] = [];
+
+  if (queryParams?.type === "bug" || queryParams?.type === "feature_request") {
+    values.push(queryParams.type);
+    conditions.push(`type = $${values.length}`);
+  }
+
+  const validStatuses = ["open", "in_progress", "resolved"];
+  if (queryParams?.status && validStatuses.includes(queryParams.status)) {
+    values.push(queryParams.status);
+    conditions.push(`status = $${values.length}`);
+  }
+
+  let queryText = "SELECT * FROM issues";
+  if (conditions.length > 0) {
+    queryText += ` WHERE ${conditions.join(" AND ")}`;
+  }
+
+  const direction = queryParams?.sort === "oldest" ? "ASC" : "DESC";
+  queryText += ` ORDER BY created_at ${direction}`;
+
   const pool = await getQueryPool();
-  const result = await pool.query("SELECT * FROM issues");
+  const result = await pool.query(queryText, values);
+
   return result.rows;
 }
 

@@ -23,3 +23,14 @@ export async function findUserByEmail(email: string) {
   ]);
   return result.rows[0];
 }
+
+export async function findUsersByIds(ids: number[]) {
+  if (ids.length === 0) return [];
+  const pool = await getQueryPool();
+  const placeholders = ids.map((_, index) => `$${index + 1}`).join(", ");
+  const result = await pool.query(
+    `SELECT id, name, role FROM users WHERE id IN (${placeholders})`,
+    ids,
+  );
+  return result.rows;
+}
