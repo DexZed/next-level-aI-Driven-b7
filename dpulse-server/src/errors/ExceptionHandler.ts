@@ -1,5 +1,3 @@
-import dbClient from "../db/model";
-
 export class ExceptionHandler {
   private static shuttingDown = false;
   public static init() {
@@ -33,7 +31,7 @@ export class ExceptionHandler {
 
     console.log("Shutting down gracefully...");
 
-    await dbClient.disconnect();
+   
     setTimeout(() => {
       process.exit(code);
     }, 1000);
