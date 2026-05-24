@@ -27,7 +27,8 @@
     "noPropertyAccessFromIndexSignature": false,
 
     // Project Specific
-    "typeRoots": ["./src/types"]
+    "typeRoots": ["./node_modules/@types", "./src/types"],
+    
   },
   "include": ["./*.js", "src/**/*.ts", "test/**/*.ts", "src/types", "src/utils/misc.ts"]
 }
