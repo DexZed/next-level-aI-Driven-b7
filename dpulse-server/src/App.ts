@@ -70,5 +70,5 @@ export default function init() {
   initMiddlewares();
   initRoutes(routes);
   initErrorHandler();
-  initServer(3000);
+  initServer(Number(process.env.PORT) ?? 3000);
 }
