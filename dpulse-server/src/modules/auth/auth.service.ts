@@ -58,18 +58,18 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
     data: { token, user },
   });
 });
-export async function logout(req: Request, res: Response) {
+export const logout = asyncHandler(async (req: Request, res: Response) => {
   res.json({
     success: true,
     message: "from logout",
     data: req.body,
   });
-}
+});
 
-export async function refresh(req: Request, res: Response) {
+export const refresh = asyncHandler(async (req: Request, res: Response) => {
   res.json({
     success: true,
     message: "from refresh",
     data: req.body,
   });
-}
+});

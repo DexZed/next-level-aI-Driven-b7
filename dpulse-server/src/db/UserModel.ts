@@ -7,7 +7,7 @@ export async function getQueryPool() {
   return pool;
 }
 
-export async function createUser(user: User) {
+export async function createUser(user: Omit<User, "id" | "created_at" | "updated_at">) {
   const pool = await getQueryPool();
   const result = await pool.query(
     "INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4) RETURNING *",
