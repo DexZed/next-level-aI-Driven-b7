@@ -1,9 +1,11 @@
-import type { User } from "../utils/interfaces";
+import type { User } from "../utils/interfaces.js";
+
 import dbClient from "./model";
 
 export async function getQueryPool() {
   const pool = await dbClient.dbQuery();
-  if (!pool) throw new Error("Database pool could not be initialized.");
+  if (!pool)
+    throw new Error("Database pool could not be initialized.");
   return pool;
 }
 
@@ -25,7 +27,8 @@ export async function findUserByEmail(email: string) {
 }
 
 export async function findUsersByIds(ids: number[]) {
-  if (ids.length === 0) return [];
+  if (ids.length === 0)
+    return [];
   const pool = await getQueryPool();
   const placeholders = ids.map((_, index) => `$${index + 1}`).join(", ");
   const result = await pool.query(

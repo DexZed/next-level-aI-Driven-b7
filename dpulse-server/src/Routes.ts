@@ -1,5 +1,7 @@
-import type { RequestHandler, Request, Response } from "express";
+import type { Request, RequestHandler, Response } from "express";
+
 import { Router } from "express";
+
 import authRouter from "./modules/auth/auth.controller";
 import issuesRouter from "./modules/issues/issues.controller";
 

@@ -1,7 +1,10 @@
 import type { NextFunction, Request, Response } from "express";
+
 import bcrypt from "bcrypt";
-import type { User } from "./interfaces";
 import jwt from "jsonwebtoken";
+
+import type { User } from "./interfaces";
+import { env } from "../env";
 
 type AsyncRouteHandler = (
   req: Request,
@@ -33,7 +36,7 @@ export async function comparePassword(
 export function generateToken(
   user: Omit<User, "password" | "created_at" | "updated_at" | "email">,
 ) {
-  const token = jwt.sign(user, process.env.TOKEN as string, {
+  const token = jwt.sign(user, env.TOKEN as string, {
     expiresIn: "7d",
   });
   return token;

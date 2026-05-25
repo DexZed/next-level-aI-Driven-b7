@@ -1,15 +1,17 @@
 import type { NextFunction, Request, Response } from "express";
-import { HttpException, BadRequestException } from "./HttpException";
+
+import { BadRequestException, HttpException } from "./HttpException";
+import { env } from "../env";
 
 export function globalErrorHandler(
   err: Error,
   req: Request,
   res: Response,
-  next: NextFunction,
+  _: NextFunction,
 ) {
   let statusCode = 500;
   let message = "Internal server error";
-  let details: any = undefined;
+  let details: any;
 
   if (err instanceof HttpException) {
     statusCode = err.status;
@@ -18,7 +20,8 @@ export function globalErrorHandler(
     if (err instanceof BadRequestException) {
       details = err.details;
     }
-  } else {
+  }
+  else {
     console.error("💥 Unhandled Application Error:", err);
   }
 
@@ -29,6 +32,6 @@ export function globalErrorHandler(
     path: req.originalUrl,
     message,
     ...(details && { details }),
-    ...(process.env.NODE_ENV === "development" && { stack: err.stack }),
+    ...(env.NODE_ENV === "development" && { stack: err.stack }),
   });
 }

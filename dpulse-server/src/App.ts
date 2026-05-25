@@ -1,19 +1,21 @@
-import type { Application } from "express";
-import chalk from "chalk";
-import cookieParser from "cookie-parser";
-import cors from "cors";
 import express, {
+  Application,
   type NextFunction,
   type Request,
   type Response,
 } from "express";
-import "express-async-errors";
+import chalk from "chalk";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import 'dotenv/config'
 import helmet from "helmet";
 import morgan from "morgan";
-import type { RouteDefinition } from "./Routes";
+import type { RouteDefinition } from "./Routes.js";
 import routes from "./Routes";
 import { NotFoundException } from "./errors/HttpException";
 import { globalErrorHandler } from "./errors/GlobalError";
+import { env } from "./env";
+
 
 const APP: Application = express();
 
@@ -71,5 +73,5 @@ export default function init() {
   initMiddlewares();
   initRoutes(routes);
   initErrorHandler();
-  initServer(Number(process.env.PORT) ?? 3000);
+  initServer(Number(env.PORT) ?? 3000);
 }

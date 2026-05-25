@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
-import asyncHandler from "../../utils/utilities";
-import type { RequestExtended } from "../../types";
+
+import type { RequestExtended } from "../../types/index";
+
 import {
   createIssue,
   deleteIssue,
@@ -14,6 +15,7 @@ import {
   ForbiddenException,
   NotFoundException,
 } from "../../errors/HttpException";
+import asyncHandler from "../../utils/utilities";
 
 export const postIssue = asyncHandler(
   async (req: RequestExtended, res: Response) => {
@@ -24,9 +26,9 @@ export const postIssue = asyncHandler(
       return new BadRequestException("Invalid issue data");
     }
     const result = await createIssue({
-      title: title,
-      description: description,
-      type: type,
+      title,
+      description,
+      type,
       reporter_id: user?.id,
     });
     res.json({
@@ -55,7 +57,7 @@ export const getAllIssues = asyncHandler(
 
     const users = await findUsersByIds(reporterIds as number[]);
 
-    const userMap = new Map(users.map((user) => [user.id, user]));
+    const userMap = new Map(users.map(user => [user.id, user]));
 
     const formattedData = issues.map((issue: any) => {
       const reporter = userMap.get(issue.reporter_id) || null;
@@ -114,8 +116,8 @@ export const updateIssueHandler = asyncHandler(
     const isMaintainer = user?.role === "maintainer";
     const isOwner = existingIssue.reporter_id === user?.id;
     const isOpen = existingIssue.status === "open";
-    const isAllowedContributor =
-      user?.role === "contributor" && isOwner && isOpen;
+    const isAllowedContributor
+      = user?.role === "contributor" && isOwner && isOpen;
 
     if (!isMaintainer && !isAllowedContributor) {
       throw new ForbiddenException(

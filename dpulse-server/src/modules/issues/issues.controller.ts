@@ -1,12 +1,13 @@
 import express from "express";
+
+import jwtVerify from "../../middlewares/jwt.validation";
 import {
-  postIssue,
   deleteIssueHandler,
   getAllIssues,
   getOneIssues,
+  postIssue,
   updateIssueHandler,
 } from "./issues.service";
-import jwtVerify from "../../middlewares/jwt.validation";
 
 const issuesRouter = express.Router();
 
@@ -16,8 +17,8 @@ issuesRouter.get("/", getAllIssues);
 
 issuesRouter.get("/:id", getOneIssues);
 
-issuesRouter.patch("/:id",jwtVerify, updateIssueHandler);
+issuesRouter.patch("/:id", jwtVerify, updateIssueHandler);
 
-issuesRouter.delete("/:id",jwtVerify, deleteIssueHandler);
+issuesRouter.delete("/:id", jwtVerify, deleteIssueHandler);
 
 export default issuesRouter;

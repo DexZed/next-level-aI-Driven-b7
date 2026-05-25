@@ -1,4 +1,5 @@
 import express from "express";
+
 import { login, logout, refresh, register } from "./auth.service";
 
 const authRouter = express.Router();

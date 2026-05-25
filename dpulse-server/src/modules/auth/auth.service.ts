@@ -1,20 +1,21 @@
 import type { Request, Response } from "express";
+
+import { createUser, findUserByEmail } from "../../db/UserModel";
 import asyncHandler, {
   comparePassword,
   generateToken,
   hashPassword,
 } from "../../utils/utilities";
 
-import { createUser, findUserByEmail } from "../../db/UserModel";
-
 export const register = asyncHandler(async (req: Request, res: Response) => {
-  const { name, email, password, role } = req.body;
+  const { name , email, password, role } = req.body;
 
   if (!name || !email || !password) {
     return res
       .status(400)
       .json({ success: false, message: "Invalid user data" });
   }
+
 
   const hashedPassword = hashPassword(password);
   const newUser = await createUser({

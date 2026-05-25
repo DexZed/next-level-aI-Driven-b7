@@ -1,4 +1,5 @@
-import type { Issue } from "../utils/interfaces";
+import type { Issue } from "../utils/interfaces.js";
+
 import { getQueryPool } from "./UserModel";
 
 export async function createIssue(
@@ -13,8 +14,8 @@ export async function createIssue(
 }
 
 export async function getIssues(queryParams?: {
-  sort?: string; 
-  type?: string; 
+  sort?: string;
+  type?: string;
   status?: string;
 }) {
   const conditions: string[] = [];
@@ -55,7 +56,7 @@ export async function updateIssue(id: number, issue: { title: string; descriptio
   const pool = await getQueryPool();
   const result = await pool.query(
     "UPDATE issues SET title = $1, description = $2, type = $3 WHERE id = $4 RETURNING *",
-    [issue.title, issue.description, issue.type, id]
+    [issue.title, issue.description, issue.type, id],
   );
   return result.rows[0];
 }

@@ -1,9 +1,11 @@
 import type { NextFunction, Response } from "express";
-import type { RequestExtended } from "../types";
+
+import type { RequestExtended } from "../types/index.js";
+
 import {
   ForbiddenException,
   UnauthorizedException,
-} from "../errors/HttpException";
+} from "../errors/HttpException.js";
 
 export default function verifyRoles(...roles: string[]) {
   return (req: RequestExtended, res: Response, next: NextFunction) => {
@@ -11,9 +13,10 @@ export default function verifyRoles(...roles: string[]) {
       return new UnauthorizedException("Unauthorized");
     }
     const userRole = req.user.role;
-    if (!roles.find((r) => userRole.includes(r))) {
+    if (!roles.find(r => userRole.includes(r))) {
       return new ForbiddenException("Forbidden");
-    } else {
+    }
+    else {
       next();
     }
   };

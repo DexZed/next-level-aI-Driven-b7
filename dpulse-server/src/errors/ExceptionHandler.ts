@@ -8,30 +8,30 @@ export class ExceptionHandler {
 
     if (process.listenerCount("unhandledRejection") === 0) {
       process.on("unhandledRejection", (reason) => {
-      console.error("Unhandled Rejection:", reason);
-    });
-      
+        console.error("Unhandled Rejection:", reason);
+      });
     }
 
     process.on("SIGINT", async () => {
       console.log("SIGINT received");
-      
+
       await ExceptionHandler.shutdown(0);
     });
 
     process.on("SIGTERM", async () => {
       console.log("SIGTERM received");
-    
+
       await ExceptionHandler.shutdown(0);
     });
   }
+
   private static async shutdown(code: number) {
-    if (ExceptionHandler.shuttingDown) return;
+    if (ExceptionHandler.shuttingDown)
+      return;
     ExceptionHandler.shuttingDown = true;
 
     console.log("Shutting down gracefully...");
 
-   
     setTimeout(() => {
       process.exit(code);
     }, 1000);
