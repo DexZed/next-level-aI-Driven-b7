@@ -14,7 +14,6 @@ DROP TABLE IF EXISTS Users;
 -- =========================================================================
 -- 1. CREATE USERS TABLE
 -- =========================================================================
-
 CREATE TABLE
     Users (
         user_id INT GENERATED ALWAYS AS IDENTITY,
@@ -22,61 +21,54 @@ CREATE TABLE
         email VARCHAR(32) NOT NULL,
         role VARCHAR(16) NOT NULL,
         phone_number INT NULL,
-        -- Write your constraint to make 'user_id' the Primary Key
         PRIMARY KEY (user_id),
-        -- Write your constraint to ensure 'email' values are never duplicated
         UNIQUE (email),
-        -- Write your check constraint to restrict 'role' to specific allowed strings
         CHECK (role IN ('Football Fan', 'Ticket Manager'))
     );
 
 -- =========================================================================
 -- 2. CREATE MATCHES TABLE
 -- =========================================================================
-
+CREATE TABLE
 CREATE TABLE
     Matches (
         match_id INT GENERATED ALWAYS AS IDENTITY,
         fixture VARCHAR(32) NOT NULL,
-        tournament_category VARCHAR(16) NOT NULL, 
+        tournament_category VARCHAR(16) NOT NULL,
         base_ticket_price DECIMAL(10, 2) NOT NULL,
-        match_status ENUM ('Available', 'Sold Out', 'Selling Fast','Postponed') NOT NULL,
-        -- Write your constraint to make 'match_id' the Primary Key
+        match_status VARCHAR(16) NOT NULL,
         PRIMARY KEY (match_id),
-        -- Write your check constraint to prevent negative ticket prices
         CHECK (base_ticket_price >= 0),
-        -- Write your check constraint to restrict 'match_status' values
-        CHECK (match_status IN ('Available', 'Sold Out', 'Selling Fast','Postponed')),
+        CHECK (
+            match_status IN (
+                'Available',
+                'Sold Out',
+                'Selling Fast',
+                'Postponed'
+            )
+        )
     );
 
 -- =========================================================================
 -- 3. CREATE BOOKINGS TABLE
 -- =========================================================================
 CREATE TABLE
-    Bookings (
-        booking_id INT GENERATED ALWAYS AS IDENTITY,
-        user_id INT NOT NULL,
-        match_id INT NOT NULL,
-        seat_number VARCHAR(16) NULL,
-        payment_status VARCHAR(16) NULL
-        total_cost DECIMAL(10, 2) NULL,
-        -- Write your constraint to make 'booking_id' the Primary Key
-        PRIMARY KEY (booking_id),
-        -- Write your Foreign Key constraint linking 'user_id' to the Users table
-        INDEX fk_user_id (user_id),
-        INDEX fk_match_id (match_id),
-
-       CONSTRAINT fk_user_id 
-        FOREIGN KEY (user_id) 
-        REFERENCES Users(user_id),
-        -- Write your Foreign Key constraint linking 'match_id' to the Matches table
-        CONSTRAINT fk_match_id 
-        FOREIGN KEY (match_id) 
-        REFERENCES Matches(match_id),
-        -- Write your check constraint to ensure 'total_cost' is non-negative
-        CHECK (total_cost >= 0),
-        -- Write your check constraint to restrict 'payment_status' values
-        CHECK (payment_status IN ('Pending', 'Confirmed','Cancelled','Refunded'))
+    Matches (
+        match_id INT GENERATED ALWAYS AS IDENTITY,
+        fixture VARCHAR(32) NOT NULL,
+        tournament_category VARCHAR(16) NOT NULL,
+        base_ticket_price DECIMAL(10, 2) NOT NULL,
+        match_status VARCHAR(16) NOT NULL,
+        PRIMARY KEY (match_id),
+        CHECK (base_ticket_price >= 0),
+        CHECK (
+            match_status IN (
+                'Available',
+                'Sold Out',
+                'Selling Fast',
+                'Postponed'
+            )
+        )
     );
 
 -- =========================================================================
