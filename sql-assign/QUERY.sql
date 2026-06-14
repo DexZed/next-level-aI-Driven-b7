@@ -174,3 +174,48 @@ VALUES
     (504, 2, 101, NULL, NULL, 150.00),
     (505, 3, 102, 'C-20', 'Pending', 120.00);
 
+-- Query 1: Retrieve all upcoming football matches belonging to the 'Champions League' where the match status is 'Available'.
+SELECT
+    m.match_id,
+    m.fixture,
+    m.base_ticket_price
+FROM
+    Matches m
+WHERE
+    m.tournament_category = 'Champions League'
+    AND m.match_status = 'Available';
+
+-- Query 2: Search for all users whose full names start with 'Tanvir' or contain the phrase 'Haque' (case-insensitive).
+SELECT
+    u.user_id,
+    u.full_name,
+    u.email
+FROM
+    Users u
+WHERE
+    u.full_name LIKE 'Tanvir%'
+    OR u.full_name LIKE '%Haque%';
+
+-- Retrieve all booking records where the payment status is missing (`NULL`), replacing the empty result with 'Action Required'.
+SELECT
+    booking_id,
+    user_id,
+    match_id,
+    seat_number,
+    COALESCE(payment_status, 'Action Required') AS payment_status,
+    total_cost
+FROM
+    Bookings
+WHERE
+    payment_status IS NULL;
+
+-- Query 4: Retrieve match booking details along with the User's full name and the scheduled Match fixture teams.
+SELECT
+    b.booking_id,
+    u.full_name,
+    m.fixture,
+	b.total_cost
+FROM
+    Bookings b
+    JOIN Users u ON b.user_id = u.user_id
+    JOIN Matches m ON b.match_id = m.match_id;
