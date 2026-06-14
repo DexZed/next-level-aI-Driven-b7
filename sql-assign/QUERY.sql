@@ -16,11 +16,11 @@ DROP TABLE IF EXISTS Users;
 -- =========================================================================
 CREATE TABLE
     Users (
-        user_id INT GENERATED ALWAYS AS IDENTITY,
+        user_id INT ,
         full_name VARCHAR(16) NOT NULL,
         email VARCHAR(32) NOT NULL,
         role VARCHAR(16) NOT NULL,
-        phone_number INT NULL,
+        phone_number VARCHAR(20) NULL,
         PRIMARY KEY (user_id),
         UNIQUE (email),
         CHECK (role IN ('Football Fan', 'Ticket Manager'))
@@ -30,9 +30,8 @@ CREATE TABLE
 -- 2. CREATE MATCHES TABLE
 -- =========================================================================
 CREATE TABLE
-CREATE TABLE
     Matches (
-        match_id INT GENERATED ALWAYS AS IDENTITY,
+        match_id INT ,
         fixture VARCHAR(32) NOT NULL,
         tournament_category VARCHAR(16) NOT NULL,
         base_ticket_price DECIMAL(10, 2) NOT NULL,
@@ -52,25 +51,27 @@ CREATE TABLE
 -- =========================================================================
 -- 3. CREATE BOOKINGS TABLE
 -- =========================================================================
-CREATE TABLE
-    Matches (
-        match_id INT GENERATED ALWAYS AS IDENTITY,
-        fixture VARCHAR(32) NOT NULL,
-        tournament_category VARCHAR(16) NOT NULL,
-        base_ticket_price DECIMAL(10, 2) NOT NULL,
-        match_status VARCHAR(16) NOT NULL,
-        PRIMARY KEY (match_id),
-        CHECK (base_ticket_price >= 0),
-        CHECK (
-            match_status IN (
-                'Available',
-                'Sold Out',
-                'Selling Fast',
-                'Postponed'
-            )
-        )
-    );
-
+CREATE TABLE Bookings (
+    booking_id INT ,
+    user_id INT NOT NULL,
+    match_id INT NOT NULL,
+    seat_number VARCHAR(10),
+    payment_status VARCHAR(10),
+    total_cost DECIMAL(10, 2) NOT NULL,
+    
+    -- Write your constraint to make 'booking_id' the Primary Key
+    PRIMARY KEY (booking_id),
+    -- Write your Foreign Key constraint linking 'user_id' to the Users table
+    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    -- Write your Foreign Key constraint linking 'match_id' to the Matches table
+    FOREIGN KEY (match_id) REFERENCES Matches(match_id),
+    -- Write your check constraint to ensure 'total_cost' is non-negative
+    CHECK (total_cost >= 0),
+    -- Write your check constraint to restrict 'payment_status' values
+    CHECK (
+        payment_status IN ('Pending', 'Confirmed','Cancelled','Refunded')
+    )
+);
 -- =========================================================================
 -- DATA SEEDING: INSERT SAMPLE DATA INTO USERS
 -- =========================================================================
