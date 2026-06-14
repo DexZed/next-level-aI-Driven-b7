@@ -14,12 +14,13 @@ DROP TABLE IF EXISTS Users;
 -- =========================================================================
 -- 1. CREATE USERS TABLE
 -- =========================================================================
+
 CREATE TABLE
     Users (
         user_id INT GENERATED ALWAYS AS IDENTITY,
         full_name VARCHAR(16) NOT NULL,
         email VARCHAR(32) NOT NULL,
-        role ENUM ('Football Fan', 'Ticket Manager') NOT NULL,
+        role VARCHAR(16) NOT NULL,
         phone_number INT NULL,
         -- Write your constraint to make 'user_id' the Primary Key
         PRIMARY KEY (user_id),
@@ -32,11 +33,12 @@ CREATE TABLE
 -- =========================================================================
 -- 2. CREATE MATCHES TABLE
 -- =========================================================================
+
 CREATE TABLE
     Matches (
         match_id INT GENERATED ALWAYS AS IDENTITY,
         fixture VARCHAR(32) NOT NULL,
-        tournament_category ENUM ('Champions League', 'Premier League', 'Serie A') NOT NULL, 
+        tournament_category VARCHAR(16) NOT NULL, 
         base_ticket_price DECIMAL(10, 2) NOT NULL,
         match_status ENUM ('Available', 'Sold Out', 'Selling Fast','Postponed') NOT NULL,
         -- Write your constraint to make 'match_id' the Primary Key
@@ -56,7 +58,7 @@ CREATE TABLE
         user_id INT NOT NULL,
         match_id INT NOT NULL,
         seat_number VARCHAR(16) NULL,
-        payment_status ENUM ('Pending', 'Confirmed','Cancelled','Refunded') NULL
+        payment_status VARCHAR(16) NULL
         total_cost DECIMAL(10, 2) NULL,
         -- Write your constraint to make 'booking_id' the Primary Key
         PRIMARY KEY (booking_id),
