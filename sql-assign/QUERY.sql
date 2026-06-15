@@ -21,8 +21,11 @@ CREATE TABLE
         email VARCHAR(32) NOT NULL,
         role VARCHAR(16) NOT NULL,
         phone_number VARCHAR(20) NULL,
+        -- Write your constraint to make 'user_id' the Primary Key
         PRIMARY KEY (user_id),
+        -- Write your constraint to ensure 'email' values are never duplicated
         UNIQUE (email),
+        -- Write your check constraint to restrict 'role' to specific allowed strings
         CHECK (role IN ('Football Fan', 'Ticket Manager'))
     );
 
@@ -36,8 +39,11 @@ CREATE TABLE
         tournament_category VARCHAR(16) NOT NULL,
         base_ticket_price DECIMAL(10, 2) NOT NULL,
         match_status VARCHAR(16) NOT NULL,
+        -- Write your constraint to make 'match_id' the Primary Key
         PRIMARY KEY (match_id),
+        -- Write your check constraint to prevent negative ticket prices
         CHECK (base_ticket_price >= 0),
+        -- Write your check constraint to restrict 'match_status' values
         CHECK (
             match_status IN (
                 'Available',
@@ -175,8 +181,9 @@ VALUES
     (504, 2, 101, NULL, NULL, 150.00),
     (505, 3, 102, 'C-20', 'Pending', 120.00);
 
+-- =========================================================================
 -- Query 1: Retrieve all upcoming football matches belonging to the 'Champions League' where the match status is 'Available'.
-
+-- =========================================================================
 SELECT
     m.match_id,
     m.fixture,
@@ -187,8 +194,9 @@ WHERE
     m.tournament_category = 'Champions League'
     AND m.match_status = 'Available';
 
+-- =========================================================================
 -- Query 2: Search for all users whose full names start with 'Tanvir' or contain the phrase 'Haque' (case-insensitive).
-
+-- =========================================================================
 SELECT
     u.user_id,
     u.full_name,
@@ -199,8 +207,9 @@ WHERE
     u.full_name LIKE 'Tanvir%'
     OR u.full_name LIKE '%Haque%';
 
+-- =========================================================================
 -- Query 3: Retrieve all booking records where the payment status is missing (`NULL`), replacing the empty result with 'Action Required'.
-
+-- =========================================================================
 SELECT
     booking_id,
     user_id,
@@ -213,8 +222,9 @@ FROM
 WHERE
     payment_status IS NULL;
 
+-- =========================================================================
 -- Query 4: Retrieve match booking details along with the User's full name and the scheduled Match fixture teams.
-
+-- =========================================================================
 SELECT
     b.booking_id,
     u.full_name,
@@ -225,8 +235,9 @@ FROM
     JOIN Users u ON b.user_id = u.user_id
     JOIN Matches m ON b.match_id = m.match_id;
 
+-- =========================================================================
 -- Query 5: Display a comprehensive list of all users and their booking IDs, ensuring that fans who have *never* bought a ticket are still listed.
-
+-- =========================================================================
 SELECT
     u.user_id,
     u.full_name,
@@ -235,8 +246,9 @@ FROM
     Users u
     LEFT JOIN Bookings b ON u.user_id = b.user_id;
 
+-- =========================================================================
 -- Query 6: Find all ticket bookings where the total cost is strictly higher than the average cost of all ticket bookings.
-
+-- =========================================================================
 SELECT
     b.booking_id,
     b.match_id,
@@ -251,8 +263,9 @@ WHERE
             Bookings
     );
 
+-- =========================================================================
 -- Query 7: Retrieve the top 2 most expensive matches sorted by base ticket price, skipping the absolute highest premium match.
-
+-- =========================================================================
 SELECT
     m.match_id,
     m.fixture,
@@ -270,3 +283,5 @@ ORDER BY
     m.base_ticket_price DESC
 LIMIT
     2;
+
+-- =========================================================================
