@@ -28,7 +28,6 @@
     "dotenv": "^17.4.2",
     "express": "^5.1.0",
     "helmet": "^8.1.0",
-    "http-status": "^2.1.0",
     "morgan": "^1.10.1",
     "pg": "^8.22.0",
     "zod": "^4.1.12"
@@ -44,6 +43,7 @@
     "@types/supertest": "^6.0.3",
     "eslint": "^9.38.0",
     "eslint-plugin-format": "^1.0.2",
+    "http-status-codes": "^2.3.0",
     "prisma": "^7.8.0",
     "supertest": "^7.1.4",
     "tsx": "^4.20.6",

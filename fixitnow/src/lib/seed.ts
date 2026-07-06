@@ -1,21 +1,21 @@
 import { prisma } from "./prisma";
 
+async function cleanDatabase() {
+  await prisma.user.deleteMany();
+  await prisma.booking.deleteMany();
+  await prisma.category.deleteMany();
+  await prisma.payments.deleteMany();
+  await prisma.review.deleteMany();
+  await prisma.service.deleteMany();
+  await prisma.technician.deleteMany();
+  await prisma.technicianService.deleteMany();
+}
 
 async function main() {
-  // clean table
-  const deleteUsers = await prisma.user.deleteMany();
+  // clean tables
+  await cleanDatabase();
 
-  // Create a new user with a post
-
-  const user = await prisma.user.create({
-    data: {},
-  });
-  console.log("Created user:", user);
-
-  // Fetch all users with their posts
-  const allUsers = await prisma.user.findMany({
-  });
-  console.log("All users:", JSON.stringify(allUsers, null, 2));
+  await Promise.all([]);
 }
 
 main()
