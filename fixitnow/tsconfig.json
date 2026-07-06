@@ -14,9 +14,9 @@
     "ignoreDeprecations": "6.0",
     "types": ["node"]
   },
-  "include": [
-    "./*.js",
-    "src/**/*.ts",
-    "test/**/*.ts"
-  ]
+  // "include": [
+  //   "./*.js",
+  //   "src/**/*.ts",
+  //   "test/**/*.ts"
+  // ]
 }
