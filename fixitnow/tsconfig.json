@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "module": "commonjs",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "strict": true,
     "noImplicitAny": true,
     "outDir": "dist",
@@ -9,7 +10,9 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "rootDir": "src"
+    "rootDir": "src",
+    "ignoreDeprecations": "6.0",
+    "types": ["node"]
   },
   "include": [
     "./*.js",
