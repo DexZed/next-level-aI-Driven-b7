@@ -10,7 +10,7 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "rootDir": "src",
+    // "rootDir": "src",
     "ignoreDeprecations": "6.0",
     "types": ["node"]
   },
