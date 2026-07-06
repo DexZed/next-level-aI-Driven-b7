@@ -22,7 +22,13 @@ export default class App {
   }
 
   private initMiddlewares(): void {
-    this.app.use(express.json());
+    this.app.use((req, res, next) => {
+        if (req.path === "/api/v1/stripe/webhook") {
+            next();
+        } else {
+            express.json()(req, res, next);
+        }
+    });
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(
       morgan((tokens, req, res) => {
