@@ -7,14 +7,14 @@ const envSchema = z.object({
   PORT: z.coerce.number().default(3000),
   BCRYPT_SALT_ROUNDS: z.coerce.number().default(10),
 
-  JWT_ACCESS_SECRET: z.string(),
-  JWT_REFRESH_SECRET: z.string(),
-  JWT_ACCESS_EXPIRES_IN: z.string().default("1d"),
-  JWT_REFRESH_EXPIRES_IN: z.string().default("7d"),
+  // JWT_ACCESS_SECRET: z.string(),
+  // JWT_REFRESH_SECRET: z.string(),
+  // JWT_ACCESS_EXPIRES_IN: z.string().default("1d"),
+  // JWT_REFRESH_EXPIRES_IN: z.string().default("7d"),
 
-  STRIPE_PRODUCT_ID: z.string(),
-  STRIPE_SECRET_KEY: z.string(),
-  STRIPE_WEBHOOK_SECRET: z.string(),
+  // STRIPE_PRODUCT_ID: z.string(),
+  // STRIPE_SECRET_KEY: z.string(),
+  // STRIPE_WEBHOOK_SECRET: z.string(),
 });
 
 try {

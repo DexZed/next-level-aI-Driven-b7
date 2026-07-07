@@ -1,4 +1,5 @@
 import type { RequestHandler, Router } from "express";
+import publicRouter from "../modules/public/publicController";
 
 type RouteDefinition = {
   path: string;
@@ -6,6 +7,6 @@ type RouteDefinition = {
   middleware?: Array<RequestHandler>;
 };
 
-const routes: RouteDefinition[] = []
+const routes: RouteDefinition[] = [{ path: "/", controller: publicRouter }];
 
 export default routes;
