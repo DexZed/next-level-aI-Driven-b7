@@ -1,4 +1,4 @@
-prisma commands :
+-----prisma commands-----
 
 pnpm dlx prisma migrate dev --name init
 
@@ -16,3 +16,6 @@ pnpm dlx prisma-next migration status
 pnpm dlx prisma-next db sign
 
 pnpm dlx prisma-next contract emit
+
+--Seeding Commad----
+pnpm dlx tsx src/lib/seed.ts

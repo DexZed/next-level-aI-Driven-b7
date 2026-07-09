@@ -30,7 +30,7 @@ model Category {
   name        String
   description String
   is_active    Boolean   @default(true) 
-  services    Service[]
+  services    Service[]?
  @@map("categories")
 }
 
@@ -39,8 +39,8 @@ model Service {
   name               String
   description        String
   category_id        Uuid              
-  bookings           Booking[]
-  technicianServices TechnicianService[]
+  bookings           Booking[]?
+  technicianServices TechnicianService[]?
   category           Category            @relation(fields: [category_id], references: [id], onDelete: Restrict, onUpdate: Cascade)
  @@map("services")
 }
@@ -53,9 +53,9 @@ model User {
   role         Role @default(Customer)  
   created_at    DateTime @default(now()) 
   updated_at    DateTime @default(now()) 
-  bookings     Booking[]
-  reviews      Review[]
-  technicians  Technician[]
+  bookings     Booking[]?
+  reviews      Review[]?
+  technicians  Technician[]?
  @@map("users")
 }
 
@@ -65,9 +65,9 @@ model Technician {
   is_available        Boolean             @default(true) 
   ratingAvg          Float               @default(0) 
   user_id             Uuid               
-  bookings           Booking[]
-  reviews            Review[]
-  technicianServices TechnicianService[]
+  bookings           Booking[]?
+  reviews            Review[]?
+  technicianServices TechnicianService[]?
   user               User                @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Cascade)
  @@map("technicians")
 }
@@ -82,8 +82,8 @@ model Booking {
   total_price   Float      
   created_at    DateTime @default(now()) 
   updated_at    DateTime @default(now()) 
-  paymentses   Payments[]
-  reviews      Review[]
+  paymentses   Payments[]?
+  reviews      Review[]?
   service      Service    @relation(fields: [service_id], references: [id], onDelete: Restrict, onUpdate: Cascade)
   technician   Technician @relation(fields: [technician_id], references: [id], onDelete: Restrict, onUpdate: Cascade)
   user         User       @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Cascade)
