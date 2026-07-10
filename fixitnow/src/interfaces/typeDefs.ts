@@ -3,7 +3,7 @@ export interface User {
   name: string;
   email: string;
   password_hash: string;
-  role: "CUSTOMER" | "TECHNICIAN" | "ADMIN";
+  role: "customer" | "technician" | "admin";
   created_at?: Date;
   updated_at?: Date;
 }
@@ -56,19 +56,19 @@ export interface Category {
 }
 
 export interface Booking {
-    id:string ;
-    user_id:string;
-    technician_id:string;
-    service_id:string;
-    status :status;
-    scheduled_At: Date
-    total_price:number;
-    created_At: Date;
+  id: string;
+  user_id: string;
+  technician_id: string;
+  service_id: string;
+  status: status;
+  scheduled_At: Date
+  total_price: number;
+  created_At: Date;
 }
 
 export type status =
-  | "PENDING"
-  | " CONFIRMED"
-  | " IN_PROGRESS"
-  | " COMPLETED"
-  | "CANCELLED";
+  | "pending"
+  | "confirmed"
+  | "in_progress"
+  | "completed"
+  | "cancelled";
