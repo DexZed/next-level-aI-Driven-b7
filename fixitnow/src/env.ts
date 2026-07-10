@@ -1,5 +1,5 @@
 import { z } from "zod/v4";
-import "dotenv/config"
+import "dotenv/config";
 const envSchema = z.object({
   NODE_ENV: z
     .enum(["development", "production", "test"])
@@ -7,10 +7,10 @@ const envSchema = z.object({
   PORT: z.coerce.number().default(3000),
   BCRYPT_SALT_ROUNDS: z.coerce.number().default(10),
   DATABASE_URL: z.string(),
-  // JWT_ACCESS_SECRET: z.string(),
-  // JWT_REFRESH_SECRET: z.string(),
-  // JWT_ACCESS_EXPIRES_IN: z.string().default("1d"),
-  // JWT_REFRESH_EXPIRES_IN: z.string().default("7d"),
+  JWT_ACCESS_SECRET: z.string(),
+  JWT_REFRESH_SECRET: z.string(),
+  JWT_ACCESS_EXPIRES_IN: z.string().default("1d"),
+  JWT_REFRESH_EXPIRES_IN: z.string().default("7d"),
 
   // STRIPE_PRODUCT_ID: z.string(),
   // STRIPE_SECRET_KEY: z.string(),

@@ -1,4 +1,5 @@
 # FixItNow 🔧
+
 **"Your Trusted Home Service Platform"**
 
 ---
@@ -11,11 +12,11 @@ FixItNow is a backend API for a home services marketplace. Customers can browse 
 
 ## Roles & Permissions
 
-| Role | Description | Key Permissions |
-|------|-------------|-----------------|
-| **Customer** | Users who book home services | Browse services, book technicians, track bookings, leave reviews |
-| **Technician** | Service professionals | Create profile, set availability, view/manage bookings, complete jobs |
-| **Admin** | Platform moderators | Manage all users, oversee all bookings, manage service categories |
+| Role           | Description                  | Key Permissions                                                       |
+| -------------- | ---------------------------- | --------------------------------------------------------------------- |
+| **Customer**   | Users who book home services | Browse services, book technicians, track bookings, leave reviews      |
+| **Technician** | Service professionals        | Create profile, set availability, view/manage bookings, complete jobs |
+| **Admin**      | Platform moderators          | Manage all users, oversee all bookings, manage service categories     |
 
 > 💡 **Note**: Users select their role during registration.
 
@@ -30,11 +31,13 @@ FixItNow is a backend API for a home services marketplace. Customers can browse 
 ## Features
 
 ### Public Features
+
 - Browse all available services and technicians
 - Search and filter by service type, location, rating, and price
 - View technician profiles with service details and reviews
 
 ### Customer Features
+
 - Register and login as customer
 - Book a technician for a specific service and time slot
 - **Make payments via Stripe or SSLCommerz after booking is accepted**
@@ -44,6 +47,7 @@ FixItNow is a backend API for a home services marketplace. Customers can browse 
 - Manage profile
 
 ### Technician Features
+
 - Register and login as technician
 - Create and update service profile (skills, experience, pricing)
 - Set availability time slots
@@ -52,6 +56,7 @@ FixItNow is a backend API for a home services marketplace. Customers can browse 
 - Mark jobs as in-progress or completed
 
 ### Admin Features
+
 - View all users (customers and technicians)
 - Manage user status (ban/unban)
 - View all bookings
@@ -64,56 +69,63 @@ FixItNow is a backend API for a home services marketplace. Customers can browse 
 > ⚠️ **Note**: These endpoints are examples. You may add, edit, or remove endpoints based on your implementation needs.
 
 ### Authentication
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/auth/register` | Register new user (customer/technician) |
-| POST | `/api/auth/login` | Login user, return JWT |
-| GET | `/api/auth/me` | Get current authenticated user |
+
+| Method | Endpoint             | Description                             |
+| ------ | -------------------- | --------------------------------------- |
+| POST   | `/api/auth/register` | Register new user (customer/technician) |
+| POST   | `/api/auth/login`    | Login user, return JWT                  |
+| GET    | `/api/auth/me`       | Get current authenticated user          |
 
 ### Services & Technicians (Public)
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/services` | Get all services with filters (type, location, rating) |
-| GET | `/api/technicians` | Get all technicians with filters |
-| GET | `/api/technicians/:id` | Get technician profile with reviews |
-| GET | `/api/categories` | Get all service categories |
+
+| Method | Endpoint               | Description                                            |
+| ------ | ---------------------- | ------------------------------------------------------ |
+| GET    | `/api/services`        | Get all services with filters (type, location, rating) |
+| GET    | `/api/technicians`     | Get all technicians with filters                       |
+| GET    | `/api/technicians/:id` | Get technician profile with reviews                    |
+| GET    | `/api/categories`      | Get all service categories                             |
 
 ### Bookings
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/bookings` | Create new booking (customer) |
-| GET | `/api/bookings` | Get user's bookings |
-| GET | `/api/bookings/:id` | Get booking details |
+
+| Method | Endpoint            | Description                   |
+| ------ | ------------------- | ----------------------------- |
+| POST   | `/api/bookings`     | Create new booking (customer) |
+| GET    | `/api/bookings`     | Get user's bookings           |
+| GET    | `/api/bookings/:id` | Get booking details           |
 
 ### Payments (Stripe / SSLCommerz)
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/payments/create` | Create a payment intent/session for an accepted booking |
-| POST | `/api/payments/confirm` | Confirm/verify payment (webhook or callback) |
-| GET | `/api/payments` | Get user's payment history |
-| GET | `/api/payments/:id` | Get payment details |
+
+| Method | Endpoint                | Description                                             |
+| ------ | ----------------------- | ------------------------------------------------------- |
+| POST   | `/api/payments/create`  | Create a payment intent/session for an accepted booking |
+| POST   | `/api/payments/confirm` | Confirm/verify payment (webhook or callback)            |
+| GET    | `/api/payments`         | Get user's payment history                              |
+| GET    | `/api/payments/:id`     | Get payment details                                     |
 
 ### Technician Management
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| PUT | `/api/technician/profile` | Update technician profile |
-| PUT | `/api/technician/availability` | Update availability slots |
-| GET | `/api/technician/bookings` | Get technician's bookings |
-| PATCH | `/api/technician/bookings/:id` | Update booking status (accept/decline/complete) |
+
+| Method | Endpoint                       | Description                                     |
+| ------ | ------------------------------ | ----------------------------------------------- |
+| PUT    | `/api/technician/profile`      | Update technician profile                       |
+| PUT    | `/api/technician/availability` | Update availability slots                       |
+| GET    | `/api/technician/bookings`     | Get technician's bookings                       |
+| PATCH  | `/api/technician/bookings/:id` | Update booking status (accept/decline/complete) |
 
 ### Reviews
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/reviews` | Create review (after job completion) |
+
+| Method | Endpoint       | Description                          |
+| ------ | -------------- | ------------------------------------ |
+| POST   | `/api/reviews` | Create review (after job completion) |
 
 ### Admin
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/admin/users` | Get all users |
-| PATCH | `/api/admin/users/:id` | Update user status (ban/unban) |
-| GET | `/api/admin/bookings` | Get all bookings |
-| GET | `/api/admin/categories` | Get all categories |
-| POST | `/api/admin/categories` | Create new service category |
+
+| Method | Endpoint                | Description                    |
+| ------ | ----------------------- | ------------------------------ |
+| GET    | `/api/admin/users`      | Get all users                  |
+| PATCH  | `/api/admin/users/:id`  | Update user status (ban/unban) |
+| GET    | `/api/admin/bookings`   | Get all bookings               |
+| GET    | `/api/admin/categories` | Get all categories             |
+| POST   | `/api/admin/categories` | Create new service category    |
 
 ---
 
@@ -129,7 +141,7 @@ Design your own schema for the following tables:
 - **Payments** - Payment transactions (transactionId, bookingId, amount, method, provider [Stripe/SSLCommerz], status [pending/completed/failed], paidAt, etc.)
 - **Reviews** - Customer reviews for technicians
 
-> 💡 *Think about what fields each table needs based on the features above.*
+> 💡 _Think about what fields each table needs based on the features above._
 
 ---
 

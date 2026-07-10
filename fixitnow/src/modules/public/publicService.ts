@@ -3,10 +3,7 @@ import { asyncWrapper } from "../../lib/asyncWrapper";
 import type { Request, Response } from "express";
 
 export const index = asyncWrapper(async (_: Request, res: Response) => {
-  if (Math.random() < 0.5) {
-    throw new Error("Random error occurred");
-  }
-
+  
   res.status(StatusCodes.OK).json({
     message: "Working",
   });
