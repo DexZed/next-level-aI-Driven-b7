@@ -76,6 +76,6 @@ typings/
 # Serverless directories
 .serverless
 
-dist
+# dist
 /generated/prisma
-dist/
+# dist/
