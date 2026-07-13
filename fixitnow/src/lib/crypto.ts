@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { env } from "../env";
+import { env } from "../env.js";
 import { User } from "../interfaces/typeDefs.js";
 import jwt from "jsonwebtoken";
 

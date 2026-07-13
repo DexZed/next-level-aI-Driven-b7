@@ -1,5 +1,5 @@
 // import { faker } from "@faker-js/faker";
-// import { env } from "../env";
+// import { env } from "...js";
 // import { User, Technician, Category, Service } from "../interfaces/typeDefs";
 // import { db } from "../prisma/db";
 // // import { prisma } from "./prisma";

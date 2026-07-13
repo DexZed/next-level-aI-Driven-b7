@@ -7,8 +7,8 @@ import {
   generateAccessToken,
   generateRefreshToken,
   hashPassword,
-} from "../../lib/crypto";
-import { User } from "../../interfaces/typeDefs";
+} from "../../lib/crypto.js";
+import { User } from "../../interfaces/typeDefs.js";
 
 export const register = asyncWrapper(async (req: Request, res: Response) => {
   const { name, email, password, role } = req.body;

@@ -1,5 +1,5 @@
 import App from "./app.js";
-import { env } from "./env";
+import { env } from "./env.js";
 import { ExceptionHandler } from "./exceptions/systemException.js";
 import { db } from "./prisma/db.js";
 
