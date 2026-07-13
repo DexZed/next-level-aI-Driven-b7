@@ -1,6 +1,6 @@
 import express from "express";
 
-import { login, register, profile } from "./authServices";
+import { login, register, profile } from "./authServices.js";
 
 const authRouter = express.Router();
 

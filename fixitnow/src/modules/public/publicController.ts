@@ -1,16 +1,16 @@
-import  express  from "express";
-import { index, getServices, getTechnicians, getTechniciansById, getCategories } from "./publicService";
+import express from "express";
+import { index, getServices, getTechnicians, getTechniciansById, getCategories } from "./publicService.js";
 
 const publicRouter = express.Router();
 
-publicRouter.get("/",index);
+publicRouter.get("/", index);
 
-publicRouter.get("/api/services",getServices);
+publicRouter.get("/api/services", getServices);
 
-publicRouter.get("/api/technicians",getTechnicians);
+publicRouter.get("/api/technicians", getTechnicians);
 
-publicRouter.get("/api/technicians/:id",getTechniciansById);
+publicRouter.get("/api/technicians/:id", getTechniciansById);
 
-publicRouter.get("/api/categories",getCategories);
+publicRouter.get("/api/categories", getCategories);
 
 export default publicRouter;

@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import { env } from "../env";
-import { User } from "../interfaces/typeDefs";
+import { User } from "../interfaces/typeDefs.js";
 import jwt from "jsonwebtoken";
 
 export function hashPassword(password: string) {

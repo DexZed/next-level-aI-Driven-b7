@@ -1,7 +1,7 @@
-import App from "./app";
+import App from "./app.js";
 import { env } from "./env";
-import { ExceptionHandler } from "./exceptions/systemException";
-import { db } from "./prisma/db";
+import { ExceptionHandler } from "./exceptions/systemException.js";
+import { db } from "./prisma/db.js";
 
 async function bootstrap() {
   try {

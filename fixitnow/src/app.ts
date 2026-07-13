@@ -5,9 +5,9 @@ import cors from "cors";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
-import routes from "./routes/routes";
-import { NotFoundException } from "./exceptions/httpException";
-import { globalErrorHandler } from "./exceptions/appError";
+import routes from "./routes/routes.js";
+import { NotFoundException } from "./exceptions/httpException.js";
+import { globalErrorHandler } from "./exceptions/appError.js";
 
 export default class App {
   public app: Application;
@@ -23,11 +23,11 @@ export default class App {
 
   private initMiddlewares(): void {
     this.app.use((req, res, next) => {
-        if (req.path === "/api/v1/stripe/webhook") {
-            next();
-        } else {
-            express.json()(req, res, next);
-        }
+      if (req.path === "/api/v1/stripe/webhook") {
+        next();
+      } else {
+        express.json()(req, res, next);
+      }
     });
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(

@@ -1,9 +1,9 @@
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
-import { asyncWrapper } from "../../lib/asyncWrapper";
+import { asyncWrapper } from "../../lib/asyncWrapper.js";
 import type { Request, Response } from "express";
 
 export const index = asyncWrapper(async (_: Request, res: Response) => {
-  
+
   res.status(StatusCodes.OK).json({
     message: "Working",
   });

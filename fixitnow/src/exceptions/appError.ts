@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 
 import { env } from "../env";
-import { HttpException, BadRequestException } from "./httpException";
+import { HttpException, BadRequestException } from "./httpException.js";
 
 
 

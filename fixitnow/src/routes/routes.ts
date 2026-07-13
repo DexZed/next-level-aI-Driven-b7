@@ -1,6 +1,6 @@
 import type { RequestHandler, Router } from "express";
-import publicRouter from "../modules/public/publicController";
-import authRouter from "../modules/auth/authController";
+import publicRouter from "../modules/public/publicController.js";
+import authRouter from "../modules/auth/authController.js";
 
 type RouteDefinition = {
   path: string;

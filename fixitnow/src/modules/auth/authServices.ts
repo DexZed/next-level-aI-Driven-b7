@@ -1,7 +1,7 @@
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
-import { asyncWrapper } from "../../lib/asyncWrapper";
+import { asyncWrapper } from "../../lib/asyncWrapper.js";
 import type { Request, Response } from "express";
-import { db } from "../../prisma/db";
+import { db } from "../../prisma/db.js";
 import {
   comparePassword,
   generateAccessToken,
