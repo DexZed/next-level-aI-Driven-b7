@@ -1,6 +1,7 @@
 # custom 
 
-*.yaml
+pnpm-lock.yaml
+pnpm-workspace.yaml
 
 # Logs
 logs
