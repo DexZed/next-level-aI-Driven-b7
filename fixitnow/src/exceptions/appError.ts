@@ -2,7 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 
 import { env } from "../env";
 import { HttpException, BadRequestException } from "./httpException";
-import { Prisma } from "../../generated/prisma/client";
+
 
 
 
@@ -23,11 +23,8 @@ export function globalErrorHandler(
     if (err instanceof BadRequestException) {
       details = err.details;
     }
-  }else if(err instanceof Prisma.PrismaClientValidationError) {
-    statusCode = 422;
-    details = err.message.replaceAll(/\n/g, " ");
   }
-   else {
+  else {
     console.error("💥 Unhandled Application Error:", err);
   }
 

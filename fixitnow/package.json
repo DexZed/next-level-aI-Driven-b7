@@ -13,7 +13,7 @@
   "main": "src/index.ts",
   "scripts": {
     "start": "node dist/src/index.js",
-    "dev": "tsx watch src/index.ts",
+    "dev": "nodemon",
     "build": "tsc",
     "lint": "eslint --fix src test",
     "test": "vitest run",
