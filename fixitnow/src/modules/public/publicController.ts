@@ -1,9 +1,9 @@
 import express from "express";
-import { getPublicService, getServices, getTechnicians, getTechniciansById, getCategories } from "./publicService.js";
+import { healthCheck, getServices, getTechnicians, getTechniciansById, getCategories } from "./publicService.js";
 
 const publicRouter = express.Router();
 
-publicRouter.get("/", getPublicService);
+publicRouter.get("/", healthCheck);
 
 publicRouter.get("/api/services", getServices);
 
