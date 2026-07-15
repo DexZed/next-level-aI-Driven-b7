@@ -32,6 +32,7 @@ model Category {
   is_active    Boolean   @default(true) 
   services    Service[]?
  @@map("categories")
+ @@index([name])
 }
 
 model Service {
@@ -43,6 +44,8 @@ model Service {
   technicianServices TechnicianService[]?
   category           Category            @relation(fields: [category_id], references: [id], onDelete: Restrict, onUpdate: Cascade)
  @@map("services")
+ @@index([name])
+ @@index([category_id])
 }
 
 model User {
@@ -63,13 +66,15 @@ model Technician {
   id        Uuid     @id @default(uuid())
   bio                String
   is_available        Boolean             @default(true) 
-  ratingAvg          Float               @default(0) 
-  user_id             Uuid               
+  ratingAvg          Float               @default(0.0) 
+  user_id             Uuid      
+  city               String               @default("Dhaka")         
   bookings           Booking[]?
   reviews            Review[]?
   technicianServices TechnicianService[]?
   user               User                @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Cascade)
  @@map("technicians")
+ @@index([is_available, ratingAvg])
 }
 
 model Booking {
@@ -124,10 +129,11 @@ model Review {
 model TechnicianService {
   id        Uuid     @id @default(uuid())
   technician_id Uuid     
-  service_id    Uuid     
+  service_id    Uuid   
+  price         Float      @default(0.0)  
   service      Service    @relation(fields: [service_id], references: [id], onDelete: Restrict, onUpdate: Cascade)
   technician   Technician @relation(fields: [technician_id], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
-  @@index([technician_id, service_id])
+  @@index([technician_id, service_id,price])
   @@map("technicianServices")
 }

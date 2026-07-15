@@ -96,7 +96,7 @@ export const profile = asyncWrapper(async (req: RequestExtended, res: Response) 
     id: userObject.id,
   }).first();
   res.status(StatusCodes.OK).json({
-    message: `From ${req.path} `,
+    message: "Success",
     data: user,
   });
 });

@@ -1,8 +1,8 @@
-import { ReasonPhrases, StatusCodes } from "http-status-codes";
 import { asyncWrapper } from "../../lib/asyncWrapper.js";
 import type { Request, Response } from "express";
+import { StatusCodes } from "http-status-codes";
 
-export const index = asyncWrapper(async (_: Request, res: Response) => {
+export const getPublicService = asyncWrapper(async (_: Request, res: Response) => {
 
   res.status(StatusCodes.OK).json({
     message: "Working",

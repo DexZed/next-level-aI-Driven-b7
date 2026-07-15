@@ -671,6 +671,13 @@
                   "kind": "scalar"
                 }
               },
+              "city": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
               "id": {
                 "nullable": false,
                 "type": {
@@ -767,6 +774,9 @@
                 "bio": {
                   "column": "bio"
                 },
+                "city": {
+                  "column": "city"
+                },
                 "id": {
                   "column": "id"
                 },
@@ -790,6 +800,13 @@
                 "nullable": false,
                 "type": {
                   "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "price": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/float8@1",
                   "kind": "scalar"
                 }
               },
@@ -844,6 +861,9 @@
               "fields": {
                 "id": {
                   "column": "id"
+                },
+                "price": {
+                  "column": "price"
                 },
                 "service_id": {
                   "column": "service_id"
@@ -1190,7 +1210,13 @@
                 }
               },
               "foreignKeys": [],
-              "indexes": [],
+              "indexes": [
+                {
+                  "columns": [
+                    "name"
+                  ]
+                }
+              ],
               "primaryKey": {
                 "columns": [
                   "id"
@@ -1463,7 +1489,18 @@
                   }
                 }
               ],
-              "indexes": [],
+              "indexes": [
+                {
+                  "columns": [
+                    "name"
+                  ]
+                },
+                {
+                  "columns": [
+                    "category_id"
+                  ]
+                }
+              ],
               "primaryKey": {
                 "columns": [
                   "id"
@@ -1478,6 +1515,15 @@
                   "nativeType": "uuid",
                   "nullable": false,
                   "typeRef": "Uuid"
+                },
+                "price": {
+                  "codecId": "pg/float8@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": 0
+                  },
+                  "nativeType": "float8",
+                  "nullable": false
                 },
                 "service_id": {
                   "codecId": "pg/uuid@1",
@@ -1538,7 +1584,8 @@
                 {
                   "columns": [
                     "technician_id",
-                    "service_id"
+                    "service_id",
+                    "price"
                   ]
                 }
               ],
@@ -1553,6 +1600,15 @@
               "columns": {
                 "bio": {
                   "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "city": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "Dhaka"
+                  },
                   "nativeType": "text",
                   "nullable": false
                 },
@@ -1609,7 +1665,14 @@
                   }
                 }
               ],
-              "indexes": [],
+              "indexes": [
+                {
+                  "columns": [
+                    "is_available",
+                    "ratingAvg"
+                  ]
+                }
+              ],
               "primaryKey": {
                 "columns": [
                   "id"
@@ -1721,7 +1784,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "sha256:19b2dc2bb28ad15afe56980e602901213eac004f576b6edee85bcb1aa5a5346b",
+    "storageHash": "sha256:af6de66384d90b977d485d815555da66f5b73e96dcf604722ac8871bbd6afc11",
     "types": {
       "Checksum": {
         "codecId": "sql/varchar@1",

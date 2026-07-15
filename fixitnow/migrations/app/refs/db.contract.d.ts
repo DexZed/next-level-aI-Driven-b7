@@ -30,7 +30,7 @@ import type {
 } from '@prisma-next/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'sha256:19b2dc2bb28ad15afe56980e602901213eac004f576b6edee85bcb1aa5a5346b'>;
+  StorageHashBase<'sha256:af6de66384d90b977d485d815555da66f5b73e96dcf604722ac8871bbd6afc11'>;
 export type ExecutionHash =
   ExecutionHashBase<'sha256:7399e89eb2d7a287c67e393e7f419f7d2277a52cf7c3cbcad517c27d7c99a295'>;
 export type ProfileHash =
@@ -92,11 +92,13 @@ export type FieldOutputTypes = {
       readonly is_available: CodecTypes['pg/bool@1']['output'];
       readonly ratingAvg: CodecTypes['pg/float8@1']['output'];
       readonly user_id: CodecTypes['pg/uuid@1']['output'];
+      readonly city: CodecTypes['pg/text@1']['output'];
     };
     readonly TechnicianService: {
       readonly id: CodecTypes['pg/uuid@1']['output'];
       readonly technician_id: CodecTypes['pg/uuid@1']['output'];
       readonly service_id: CodecTypes['pg/uuid@1']['output'];
+      readonly price: CodecTypes['pg/float8@1']['output'];
     };
     readonly User: {
       readonly id: CodecTypes['pg/uuid@1']['output'];
@@ -158,11 +160,13 @@ export type FieldInputTypes = {
       readonly is_available: CodecTypes['pg/bool@1']['input'];
       readonly ratingAvg: CodecTypes['pg/float8@1']['input'];
       readonly user_id: CodecTypes['pg/uuid@1']['input'];
+      readonly city: CodecTypes['pg/text@1']['input'];
     };
     readonly TechnicianService: {
       readonly id: CodecTypes['pg/uuid@1']['input'];
       readonly technician_id: CodecTypes['pg/uuid@1']['input'];
       readonly service_id: CodecTypes['pg/uuid@1']['input'];
+      readonly price: CodecTypes['pg/float8@1']['input'];
     };
     readonly User: {
       readonly id: CodecTypes['pg/uuid@1']['input'];
@@ -327,7 +331,7 @@ type ContractBase = Omit<
               };
               primaryKey: { readonly columns: readonly ['id'] };
               uniques: readonly [];
-              indexes: readonly [];
+              indexes: readonly [{ readonly columns: readonly ['name'] }];
               foreignKeys: readonly [];
             };
             readonly payments: {
@@ -513,7 +517,10 @@ type ContractBase = Omit<
               };
               primaryKey: { readonly columns: readonly ['id'] };
               uniques: readonly [];
-              indexes: readonly [];
+              indexes: readonly [
+                { readonly columns: readonly ['name'] },
+                { readonly columns: readonly ['category_id'] },
+              ];
               foreignKeys: readonly [
                 {
                   readonly source: {
@@ -568,10 +575,19 @@ type ContractBase = Omit<
                   readonly nullable: false;
                   readonly typeRef: 'Uuid';
                 };
+                readonly city: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', 'Dhaka'>;
+                  };
+                };
               };
               primaryKey: { readonly columns: readonly ['id'] };
               uniques: readonly [];
-              indexes: readonly [];
+              indexes: readonly [{ readonly columns: readonly ['is_available', 'ratingAvg'] }];
               foreignKeys: readonly [
                 {
                   readonly source: {
@@ -609,10 +625,21 @@ type ContractBase = Omit<
                   readonly nullable: false;
                   readonly typeRef: 'Uuid';
                 };
+                readonly price: {
+                  readonly nativeType: 'float8';
+                  readonly codecId: 'pg/float8@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/float8@1', 0>;
+                  };
+                };
               };
               primaryKey: { readonly columns: readonly ['id'] };
               uniques: readonly [];
-              indexes: readonly [{ readonly columns: readonly ['technician_id', 'service_id'] }];
+              indexes: readonly [
+                { readonly columns: readonly ['technician_id', 'service_id', 'price'] },
+              ];
               foreignKeys: readonly [
                 {
                   readonly source: {
@@ -1146,6 +1173,10 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
               };
+              readonly city: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
             };
             readonly relations: {
               readonly bookings: {
@@ -1199,6 +1230,7 @@ type ContractBase = Omit<
                 readonly is_available: { readonly column: 'is_available' };
                 readonly ratingAvg: { readonly column: 'ratingAvg' };
                 readonly user_id: { readonly column: 'user_id' };
+                readonly city: { readonly column: 'city' };
               };
             };
           };
@@ -1215,6 +1247,10 @@ type ContractBase = Omit<
               readonly service_id: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly price: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/float8@1' };
               };
             };
             readonly relations: {
@@ -1248,6 +1284,7 @@ type ContractBase = Omit<
                 readonly id: { readonly column: 'id' };
                 readonly technician_id: { readonly column: 'technician_id' };
                 readonly service_id: { readonly column: 'service_id' };
+                readonly price: { readonly column: 'price' };
               };
             };
           };
