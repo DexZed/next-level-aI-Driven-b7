@@ -9,6 +9,8 @@ import {
   hashPassword,
 } from "../../lib/crypto.js";
 import { User } from "../../interfaces/typeDefs.js";
+import { env } from "../../env.js";
+import { RequestExtended } from "../../interfaces/index.js";
 
 export const register = asyncWrapper(async (req: Request, res: Response) => {
   const { name, email, password, role } = req.body;
@@ -72,19 +74,29 @@ export const login = asyncWrapper(async (req: Request, res: Response) => {
   }
 
   const accessToken = generateAccessToken(user);
-  // const refreshToken = generateRefreshToken(user);
-  // res.cookie("Refresh Token")
+  const refreshToken = generateRefreshToken(user);
+  res.cookie("refresh_token", refreshToken, {
+    httpOnly: true,
+    secure: env.NODE_ENV === "production",
+    sameSite: env.NODE_ENV === "production" ? "none" : "lax",
+    maxAge: 1000 * 60 * 60 * 24
+  })
   res.status(StatusCodes.OK).json({
     message: "Success",
     data: {
       user,
       accessToken,
-      // refreshToken,
     },
   });
 });
-export const profile = asyncWrapper(async (req: Request, res: Response) => {
+export const profile = asyncWrapper(async (req: RequestExtended, res: Response) => {
+  const userObject = req.user!;
+  console.log(userObject);
+  const user = await db.orm.public.User.select("id", "name", "email").where({
+    id: userObject.id,
+  }).first();
   res.status(StatusCodes.OK).json({
     message: `From ${req.path} `,
+    data: user,
   });
 });

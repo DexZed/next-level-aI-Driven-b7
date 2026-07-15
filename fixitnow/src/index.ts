@@ -7,6 +7,7 @@ async function bootstrap() {
   try {
     ExceptionHandler.init();
     await db.connect({ url: env.DATABASE_URL! });
+    console.info("db state", db);
     const server = new App(env.PORT);
     server.initServer();
   } catch (error) {

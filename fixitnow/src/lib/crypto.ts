@@ -20,7 +20,7 @@ export function generateAccessToken(
   user: Omit<User, "password" | "created_at" | "updated_at" | "name">,
 ) {
   const token = jwt.sign(user, env.JWT_ACCESS_SECRET, {
-    expiresIn: env.JWT_ACCESS_EXPIRES_IN as "1d",
+    expiresIn: 1000 * 3600 * 24,
   });
   return token;
 }
@@ -29,7 +29,7 @@ export function generateRefreshToken(
   user: Omit<User, "password" | "created_at" | "updated_at" | "name">,
 ) {
   const token = jwt.sign(user, env.JWT_REFRESH_SECRET, {
-    expiresIn: env.JWT_REFRESH_EXPIRES_IN as "7d",
+    expiresIn: 1000 * 3600 * 24 * 7,
   });
   return token;
 }

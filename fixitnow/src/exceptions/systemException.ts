@@ -3,7 +3,7 @@ export class ExceptionHandler {
     public static init() {
         process.on("uncaughtException", async (err) => {
             console.error("Uncaught Exception:", err);
-            await ExceptionHandler.shutdown(1);
+            // await ExceptionHandler.shutdown(1);
         });
 
         if (process.listenerCount("unhandledRejection") === 0) {
