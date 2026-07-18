@@ -1,9 +1,8 @@
 
-import { UnauthorizedException } from "../exceptions/httpException";
 import { RequestExtended } from "../interfaces";
-import { asyncWrapper } from "../lib/asyncWrapper";
+import { asyncWrapper } from "../lib/asyncWrapper.js";
 import type { NextFunction, Response } from "express";
-import { verifyAccessToken } from "../lib/crypto";
+import { verifyAccessToken } from "../lib/crypto.js";
 import { JwtPayload } from "jsonwebtoken";
 import { StatusCodes } from "http-status-codes";
 

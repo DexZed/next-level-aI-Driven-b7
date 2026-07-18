@@ -17,10 +17,9 @@
     ],
     "resolveJsonModule": true
   },
-  "include": [
-    "./*.js",
-    "src/**/*.ts",
-    "test/**/*.ts",
-    "interfaces/**/*.d.ts"
-  ]
+  // "include": [
+  //   "*.js",
+  //   "src/**/*.ts",
+  //   "interfaces/**/*.d.ts"
+  // ]
 }
