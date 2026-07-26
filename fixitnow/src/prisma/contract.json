@@ -1580,21 +1580,20 @@
                   }
                 }
               ],
-              "indexes": [
-                {
-                  "columns": [
-                    "technician_id",
-                    "service_id",
-                    "price"
-                  ]
-                }
-              ],
+              "indexes": [],
               "primaryKey": {
                 "columns": [
                   "id"
                 ]
               },
-              "uniques": []
+              "uniques": [
+                {
+                  "columns": [
+                    "technician_id",
+                    "service_id"
+                  ]
+                }
+              ]
             },
             "technicians": {
               "columns": {
@@ -1784,7 +1783,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "sha256:af6de66384d90b977d485d815555da66f5b73e96dcf604722ac8871bbd6afc11",
+    "storageHash": "sha256:bd3487300a8f860990421c599a7b4769e08c2b44c76a30dea0bf925e5b00a95b",
     "types": {
       "Checksum": {
         "codecId": "sql/varchar@1",

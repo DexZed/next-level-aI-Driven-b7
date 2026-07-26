@@ -68,7 +68,7 @@ model Technician {
   is_available        Boolean             @default(true) 
   ratingAvg          Float               @default(0.0) 
   user_id             Uuid      
-  city               String               @default("Dhaka")         
+  city               String               @default("Dhaka")
   bookings           Booking[]?
   reviews            Review[]?
   technicianServices TechnicianService[]?
@@ -133,7 +133,6 @@ model TechnicianService {
   price         Float      @default(0.0)  
   service      Service    @relation(fields: [service_id], references: [id], onDelete: Restrict, onUpdate: Cascade)
   technician   Technician @relation(fields: [technician_id], references: [id], onDelete: Restrict, onUpdate: Cascade)
-
-  @@index([technician_id, service_id,price])
+  @@unique([technician_id, service_id])
   @@map("technicianServices")
 }

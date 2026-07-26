@@ -17,5 +17,6 @@ pnpm dlx prisma-next db sign
 
 pnpm dlx prisma-next contract emit
 
+pnpm dlx prisma-next db update
 --Seeding Commad----
 pnpm dlx tsx src/lib/seed.ts

@@ -30,7 +30,7 @@ import type {
 } from '@prisma-next/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'sha256:af6de66384d90b977d485d815555da66f5b73e96dcf604722ac8871bbd6afc11'>;
+  StorageHashBase<'sha256:bd3487300a8f860990421c599a7b4769e08c2b44c76a30dea0bf925e5b00a95b'>;
 export type ExecutionHash =
   ExecutionHashBase<'sha256:7399e89eb2d7a287c67e393e7f419f7d2277a52cf7c3cbcad517c27d7c99a295'>;
 export type ProfileHash =
@@ -50,7 +50,7 @@ export type FieldOutputTypes = {
       readonly user_id: CodecTypes['pg/uuid@1']['output'];
       readonly technician_id: CodecTypes['pg/uuid@1']['output'];
       readonly service_id: CodecTypes['pg/uuid@1']['output'];
-      readonly status: 'pending' | 'confirmed' | 'completed' | 'cancelled' | 'in_progress';
+      readonly status: CodecTypes['pg/text@1']['output'];
       readonly scheduled_At: CodecTypes['pg/timestamptz@1']['output'];
       readonly total_price: CodecTypes['pg/float8@1']['output'];
       readonly created_at: CodecTypes['pg/timestamptz@1']['output'];
@@ -68,7 +68,7 @@ export type FieldOutputTypes = {
       readonly amount: CodecTypes['pg/float8@1']['output'];
       readonly method: CodecTypes['pg/text@1']['output'];
       readonly provider: CodecTypes['pg/text@1']['output'];
-      readonly status: 'pending' | 'confirmed' | 'completed' | 'cancelled' | 'in_progress';
+      readonly status: CodecTypes['pg/text@1']['output'];
       readonly paid_at: CodecTypes['pg/timestamptz@1']['output'] | null;
     };
     readonly Review: {
@@ -105,7 +105,7 @@ export type FieldOutputTypes = {
       readonly name: CodecTypes['pg/text@1']['output'];
       readonly email: CodecTypes['pg/text@1']['output'];
       readonly password_hash: CodecTypes['pg/text@1']['output'];
-      readonly role: 'admin' | 'customer' | 'technician';
+      readonly role: CodecTypes['pg/text@1']['output'];
       readonly created_at: CodecTypes['pg/timestamptz@1']['output'];
       readonly updated_at: CodecTypes['pg/timestamptz@1']['output'];
     };
@@ -118,7 +118,7 @@ export type FieldInputTypes = {
       readonly user_id: CodecTypes['pg/uuid@1']['input'];
       readonly technician_id: CodecTypes['pg/uuid@1']['input'];
       readonly service_id: CodecTypes['pg/uuid@1']['input'];
-      readonly status: 'pending' | 'confirmed' | 'completed' | 'cancelled' | 'in_progress';
+      readonly status: CodecTypes['pg/text@1']['input'];
       readonly scheduled_At: CodecTypes['pg/timestamptz@1']['input'];
       readonly total_price: CodecTypes['pg/float8@1']['input'];
       readonly created_at: CodecTypes['pg/timestamptz@1']['input'];
@@ -136,7 +136,7 @@ export type FieldInputTypes = {
       readonly amount: CodecTypes['pg/float8@1']['input'];
       readonly method: CodecTypes['pg/text@1']['input'];
       readonly provider: CodecTypes['pg/text@1']['input'];
-      readonly status: 'pending' | 'confirmed' | 'completed' | 'cancelled' | 'in_progress';
+      readonly status: CodecTypes['pg/text@1']['input'];
       readonly paid_at: CodecTypes['pg/timestamptz@1']['input'] | null;
     };
     readonly Review: {
@@ -173,7 +173,7 @@ export type FieldInputTypes = {
       readonly name: CodecTypes['pg/text@1']['input'];
       readonly email: CodecTypes['pg/text@1']['input'];
       readonly password_hash: CodecTypes['pg/text@1']['input'];
-      readonly role: 'admin' | 'customer' | 'technician';
+      readonly role: CodecTypes['pg/text@1']['input'];
       readonly created_at: CodecTypes['pg/timestamptz@1']['input'];
       readonly updated_at: CodecTypes['pg/timestamptz@1']['input'];
     };
@@ -636,10 +636,8 @@ type ContractBase = Omit<
                 };
               };
               primaryKey: { readonly columns: readonly ['id'] };
-              uniques: readonly [];
-              indexes: readonly [
-                { readonly columns: readonly ['technician_id', 'service_id', 'price'] },
-              ];
+              uniques: readonly [{ readonly columns: readonly ['technician_id', 'service_id'] }];
+              indexes: readonly [];
               foreignKeys: readonly [
                 {
                   readonly source: {
