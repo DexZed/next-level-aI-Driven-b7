@@ -11,11 +11,24 @@ export const createBooking = asyncWrapper(async (req: Request, res: Response) =>
             message: "All fields are required"
         })
     }
-    // TODO : Check if Service is available
 
+    const isServiceAvailable = await db.orm.public.Service.select("id").where({
+        id: service_id,
+    }).first()
+    if (!isServiceAvailable) {
+        res.status(StatusCodes.NOT_FOUND).json({
+            message: `No service found with id ${service_id}`
+        });
+    }
 
-    // TODO : Check if technician is available for the given time slot
-
+    const isTechnicianAvailable = await db.orm.public.Technician.select("id").where({
+        id: technician_id,
+    }).first()
+    if (!isTechnicianAvailable) {
+        res.status(StatusCodes.NOT_FOUND).json({
+            message: `No technician found with id ${technician_id}`
+        });
+    }
     const result = await db.orm.public.Booking.select("id", "user_id", "technician_id", "service_id", "status", "total_price", "scheduled_at",).create({
         user_id: user_id,
         technician_id: technician_id,
@@ -24,7 +37,7 @@ export const createBooking = asyncWrapper(async (req: Request, res: Response) =>
         scheduled_at: scheduled_at ?? new Date(),
     })
     res.status(StatusCodes.OK).json({
-        message: `Path ${req.path}`,
+        message: "Successfully created booking",
         data: result,
     })
 });
