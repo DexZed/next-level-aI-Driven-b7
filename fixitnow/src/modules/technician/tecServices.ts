@@ -3,6 +3,10 @@ import type { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { db } from "../../prisma/db.js";
 
+interface ServiceInput {
+    service_id: string;
+    price: number;
+}
 export const profile = asyncWrapper(async (req: Request, res: Response) => {
     const { id, bio, city, is_available, services } = req.body
     if (!id || !bio || !city || !is_available || !services) {
@@ -10,40 +14,84 @@ export const profile = asyncWrapper(async (req: Request, res: Response) => {
             message: "Missing required fields"
         });
     }
-    const result = await db.orm.public.Technician.select("id", "user_id", "bio", "city", "is_available", "services").upsert({
-        create: { bio, city, is_available, user_id: id },
-        update: { bio, city, is_available, user_id: id },
-    })
-    const technicianToServices = await db.orm.public.TechnicianService.select("id", "technician_id", "service_id", "price").upsert({
-        create: { technician_id: result.id, service_id: services, price: services.price },
-        update: { technician_id: result.id, service_id: services, price: services.price },
-    })
+
+    const result = await db.transaction(async (tx) => {
+
+        const technician = await tx.orm.public.Technician.select("id")
+            .upsert({
+                create: { user_id: id, bio, city, is_available },
+                update: { bio, city, is_available },
+            });
+
+
+        const serviceUpserts = services.map((item: ServiceInput) =>
+            tx.orm.public.TechnicianService.upsert({
+                create: {
+                    technician_id: technician.id,
+                    service_id: item.service_id,
+                    price: item.price,
+                },
+                update: {
+                    price: item.price,
+                },
+            })
+        );
+
+        const technicianServices = await Promise.all(serviceUpserts);
+
+        return { technician, technicianServices };
+    });
     res.status(StatusCodes.OK).json({
-        message: `From path ${req.url}, From ${req.method} request`,
-        data: "random text"
+        message: "Profile changed successfully",
+        data: result
     })
 })
 
 export const availability = asyncWrapper(async (req: Request, res: Response) => {
-
+    const { id, is_available } = req.body
+    if (!id || !is_available) {
+        res.status(StatusCodes.BAD_REQUEST).json({
+            message: "Missing required fields"
+        });
+    }
+    const result = await db.orm.public.Technician.where({ id: id }).update({
+        is_available: is_available
+    })
     res.status(StatusCodes.OK).json({
-        message: `From path ${req.url}, From ${req.method} request`,
-        data: "random text"
+        message: "Success, availability updated",
+        data: result
     })
 })
 
 export const getBookings = asyncWrapper(async (req: Request, res: Response) => {
+    const id = req.body.id;
+    if (!id) {
+        res.status(StatusCodes.BAD_REQUEST).json({
+            message: "Missing required fields"
+        });
+    }
+    const result = await db.orm.public.Booking.select("user_id", "service_id", "status", "scheduled_at", "total_price").where({ technician_id: id }).all()
 
     res.status(StatusCodes.OK).json({
-        message: `From path ${req.url}, From ${req.method} request`,
-        data: "random text"
+        message: "Success, bookings fetched",
+        data: result
     })
 })
 
 export const updateBookingStatus = asyncWrapper(async (req: Request, res: Response) => {
-
+    const { id, status } = req.body;
+    if (!id || !status) {
+        res.status(StatusCodes.BAD_REQUEST).json({
+            message: "Missing required fields"
+        });
+    }
+    const result = await db.orm.public.Booking.select("id", "status").where({
+        id
+    }).update({
+        status
+    })
     res.status(StatusCodes.OK).json({
-        message: `From path ${req.url}, From ${req.method} request`,
-        data: "random text"
+        message: "Success, booking status updated",
+        data: result
     })
 })

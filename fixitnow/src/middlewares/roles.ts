@@ -13,12 +13,10 @@ export default function verifyRoles(...roles: string[]) {
         const userRole = req.user.role;
         if (!roles.find(r => userRole.includes(r))) {
             res.status(StatusCodes.FORBIDDEN).json({
-                message: "Forbidden",
+                message: `Forbidden, only ${roles.join(", ")} can do this`,
             });
             return;
         }
-        else {
-            next();
-        }
+        next();
     };
 }
