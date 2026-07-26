@@ -1,7 +1,6 @@
 import express from "express";
-import verifyRoles from "../../middlewares/roles";
-import { profile } from "console";
-import { availability, getBookings, updateBookingStatus } from "./tecServices";
+import verifyRoles from "../../middlewares/roles.js";
+import { availability, getBookings, updateBookingStatus, profile } from "./tecServices.js";
 
 
 const technicianRouter = express.Router();

@@ -1,4 +1,4 @@
-import { ReasonPhrases, StatusCodes } from "http-status-codes";
+import { StatusCodes } from "http-status-codes";
 import { asyncWrapper } from "../../lib/asyncWrapper.js";
 import type { Request, Response } from "express";
 import { db } from "../../prisma/db.js";
@@ -8,7 +8,6 @@ import {
   generateRefreshToken,
   hashPassword,
 } from "../../lib/crypto.js";
-import { User } from "../../interfaces/typeDefs.js";
 import { env } from "../../env.js";
 import { RequestExtended } from "../../interfaces/index.js";
 
