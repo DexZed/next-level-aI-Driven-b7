@@ -3,6 +3,7 @@ import publicRouter from "../modules/public/publicController.js";
 import authRouter from "../modules/auth/authController.js";
 import bookingRouter from "../modules/bookings/bookingsController.js";
 import technicianRouter from "../modules/technician/tecController.js";
+import reviewsRouter from "../modules/reviews/revController.js";
 
 type RouteDefinition = {
   path: string;
@@ -13,7 +14,8 @@ const routes: RouteDefinition[] = [
   { path: "/", controller: publicRouter },
   { path: "/api/auth", controller: authRouter },
   { path: "/api/bookings", controller: bookingRouter },
-  { path: "/api/technician", controller: technicianRouter }
+  { path: "/api/technician", controller: technicianRouter },
+  { path: "/api/reviews", controller: reviewsRouter }
 ];
 
 export default routes;
