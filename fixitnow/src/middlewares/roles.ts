@@ -4,19 +4,20 @@ import { StatusCodes } from "http-status-codes";
 
 export default function verifyRoles(...roles: string[]) {
     return (req: RequestExtended, res: Response, next: NextFunction) => {
+        //console.log("verifyRoles");
         if (!req.user) {
-            res.status(StatusCodes.UNAUTHORIZED).json({
+            return res.status(StatusCodes.UNAUTHORIZED).json({
                 message: "Unauthorized",
             });
-            return;
         }
+        //console.log(req.user)
         const userRole = req.user.role;
         if (!roles.find(r => userRole.includes(r))) {
-            res.status(StatusCodes.FORBIDDEN).json({
+            return res.status(StatusCodes.FORBIDDEN).json({
                 message: `Forbidden, only ${roles.join(", ")} can do this`,
             });
-            return;
         }
+        //console.log("veirfy roles passed")
         next();
     };
 }

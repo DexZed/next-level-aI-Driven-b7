@@ -926,6 +926,13 @@
                   "plane": "domain"
                 }
               },
+              "status": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
               "updated_at": {
                 "nullable": false,
                 "type": {
@@ -1000,6 +1007,9 @@
                 },
                 "role": {
                   "column": "role"
+                },
+                "status": {
+                  "column": "status"
                 },
                 "updated_at": {
                   "column": "updated_at"
@@ -1738,6 +1748,15 @@
                     "plane": "storage"
                   }
                 },
+                "status": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "active"
+                  },
+                  "nativeType": "text",
+                  "nullable": false
+                },
                 "updated_at": {
                   "codecId": "pg/timestamptz@1",
                   "default": {
@@ -1783,7 +1802,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "sha256:bd3487300a8f860990421c599a7b4769e08c2b44c76a30dea0bf925e5b00a95b",
+    "storageHash": "sha256:f670f09851b46e55fee33c156eaf8b60965bf9d6c988f5a1bb2103c36a8a2f31",
     "types": {
       "Checksum": {
         "codecId": "sql/varchar@1",

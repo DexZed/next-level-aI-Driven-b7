@@ -8,16 +8,17 @@ interface ServiceInput {
     price: number;
 }
 export const profile = asyncWrapper(async (req: Request, res: Response) => {
+    //console.log("profile controller");
     const { id, bio, city, is_available, services } = req.body
-    if (!id || !bio || !city || !is_available || !services) {
-        res.status(StatusCodes.BAD_REQUEST).json({
+    if (!id || !bio || !city || is_available === undefined || !services) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
             message: "Missing required fields"
         });
     }
-
+    //console.log("data:", req.body);
     const result = await db.transaction(async (tx) => {
 
-        const technician = await tx.orm.public.Technician.select("id")
+        const technician = await tx.orm.public.Technician.select("id", "user_id", "bio", "city", "is_available")
             .upsert({
                 create: { user_id: id, bio, city, is_available },
                 update: { bio, city, is_available },
@@ -25,7 +26,7 @@ export const profile = asyncWrapper(async (req: Request, res: Response) => {
 
 
         const serviceUpserts = services.map((item: ServiceInput) =>
-            tx.orm.public.TechnicianService.upsert({
+            tx.orm.public.TechnicianService.select("id", "service_id", "price").upsert({
                 create: {
                     technician_id: technician.id,
                     service_id: item.service_id,
@@ -41,16 +42,20 @@ export const profile = asyncWrapper(async (req: Request, res: Response) => {
 
         return { technician, technicianServices };
     });
+    const writeData = {
+        ...result.technician,
+        services: result.technicianServices
+    }
     res.status(StatusCodes.OK).json({
         message: "Profile changed successfully",
-        data: result
+        data: writeData
     })
 })
 
 export const availability = asyncWrapper(async (req: Request, res: Response) => {
     const { id, is_available } = req.body
-    if (!id || !is_available) {
-        res.status(StatusCodes.BAD_REQUEST).json({
+    if (!id || is_available === undefined) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
             message: "Missing required fields"
         });
     }
@@ -66,7 +71,7 @@ export const availability = asyncWrapper(async (req: Request, res: Response) => 
 export const getBookings = asyncWrapper(async (req: Request, res: Response) => {
     const id = req.body.id;
     if (!id) {
-        res.status(StatusCodes.BAD_REQUEST).json({
+        return res.status(StatusCodes.BAD_REQUEST).json({
             message: "Missing required fields"
         });
     }
@@ -81,7 +86,7 @@ export const getBookings = asyncWrapper(async (req: Request, res: Response) => {
 export const updateBookingStatus = asyncWrapper(async (req: Request, res: Response) => {
     const { id, status } = req.body;
     if (!id || !status) {
-        res.status(StatusCodes.BAD_REQUEST).json({
+        return res.status(StatusCodes.BAD_REQUEST).json({
             message: "Missing required fields"
         });
     }
