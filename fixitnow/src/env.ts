@@ -15,7 +15,7 @@ const envSchema = z.object({
   // STRIPE_PRODUCT_ID: z.string(),
   STRIPE_SECRET_KEY: z.string(),
   STRIPE_WEBHOOK_SECRET_PRODUCTION: z.string(),
-  STRIPE_WEBHOOK_SECRET_LOCAL: z.string(),
+  //STRIPE_WEBHOOK_SECRET_LOCAL: z.string(),
 });
 
 try {
