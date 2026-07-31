@@ -99,6 +99,9 @@ importers:
       prisma-next:
         specifier: ^0.14.0
         version: 0.14.0(typanion@3.14.0)(typescript@5.9.3)
+      stripe:
+        specifier: ^22.4.0
+        version: 22.4.0(@types/node@24.9.2)
       supertest:
         specifier: ^7.1.4
         version: 7.1.4
@@ -3161,6 +3164,15 @@ packages:
   strip-json-comments@3.1.1:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
+
+  stripe@22.4.0:
+    resolution: {integrity: sha512-LVJ+tcSYeqOSnXr3i+Kz2tZ7y0crLLdP2uwD/4wccrmEVyn0g/Heo0pF7as7rxS/sOjJzrb1lxgZY0Y0Dx1pSA==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      '@types/node': '>=18'
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
 
   superagent@10.2.3:
     resolution: {integrity: sha512-y/hkYGeXAj7wUMjxRbB21g/l6aAEituGXM9Rwl4o20+SX3e8YOSV6BxFXl+dL3Uk0mjSL3kCbNkwURm8/gEDig==}
@@ -6717,6 +6729,10 @@ snapshots:
   strip-indent@4.1.1: {}
 
   strip-json-comments@3.1.1: {}
+
+  stripe@22.4.0(@types/node@24.9.2):
+    optionalDependencies:
+      '@types/node': 24.9.2
 
   superagent@10.2.3:
     dependencies:

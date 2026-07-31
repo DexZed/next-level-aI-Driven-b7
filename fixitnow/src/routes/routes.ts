@@ -8,6 +8,7 @@ import jwtVerify from "../middlewares/tokenVerify.js";
 import verifyRoles from "../middlewares/roles.js";
 import adminRouter from "../modules/admin/adminController.js";
 import userStatus from "../middlewares/userStatus.js";
+import paymentRouter from "../modules/subscriptions/subController.js";
 
 type RouteDefinition = {
   path: string;
@@ -20,7 +21,12 @@ const routes: RouteDefinition[] = [
   { path: "/api/bookings", controller: bookingRouter, middleware: [jwtVerify, userStatus] },
   { path: "/api/technician", controller: technicianRouter, middleware: [jwtVerify, userStatus, verifyRoles("technician")] },
   { path: "/api/reviews", controller: reviewsRouter, middleware: [jwtVerify, userStatus, verifyRoles("customer")] },
-  { path: "/api/admin", controller: adminRouter, middleware: [jwtVerify, userStatus(), verifyRoles("admin")] }
+  { path: "/api/admin", controller: adminRouter, middleware: [jwtVerify, userStatus(), verifyRoles("admin")] },
+  {
+    path: "/api/payments",
+    controller: paymentRouter,
+    middleware: [jwtVerify, userStatus(), verifyRoles("customer")]
+  }
 ];
 
 export default routes;

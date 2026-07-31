@@ -13,7 +13,7 @@ const envSchema = z.object({
   JWT_REFRESH_EXPIRES_IN: z.string().default("7d"),
 
   // STRIPE_PRODUCT_ID: z.string(),
-  // STRIPE_SECRET_KEY: z.string(),
+  STRIPE_SECRET_KEY: z.string(),
   // STRIPE_WEBHOOK_SECRET: z.string(),
 });
 
