@@ -28,7 +28,7 @@ export const createIntent = asyncWrapper(async (req: RequestExtended, res: Respo
     }
 
 
-    const amountInCents = Math.round(booking.total_price * 100);
+    const amountInCents = Math.round(booking.total_price);
 
     const paymentIntent = await stripe.paymentIntents.create({
         amount: amountInCents,
@@ -69,7 +69,7 @@ export const confirmIntent = asyncWrapper(async (req: Request, res: Response) =>
 
         await db.orm.public.Payments.create({
             booking_id: bookingId,
-            amount: paymentIntent.amount / 100,
+            amount: paymentIntent.amount,
             method: "stripe",
             provider: "stripe",
             status: "completed",
@@ -79,7 +79,11 @@ export const confirmIntent = asyncWrapper(async (req: Request, res: Response) =>
         return res.status(StatusCodes.OK).json({
             message: "Payment intent confirmed successfully",
             status: paymentIntent.status,
-            paymentIntent,
+            data: {
+                id: paymentIntent.id,
+                amount: paymentIntent.amount,
+
+            }
         });
     }
 
@@ -126,15 +130,33 @@ export const handleWebhook = asyncWrapper(async (req: Request, res: Response) =>
     res.status(StatusCodes.OK).json({ received: true });
 });
 
-export const getPaymentHistory = asyncWrapper(async (req: Request, res: Response) => {
+export const getPaymentHistory = asyncWrapper(async (req: RequestExtended, res: Response) => {
+    const userId = req.user?.id;
+    const payments = await db.orm.public.Payments
+        .select('id', "booking_id", 'amount', 'method', 'provider', 'status', 'paid_at',)
+        .where((i) => i.user_id.eq(userId))
+        .orderBy((i) => i.created_at.desc())
+        .all();
+
     res.status(StatusCodes.OK).json({
         message: `Payment history fetched successfully`,
+        data: payments
     });
 });
 
 export const getPaymentByUserId = asyncWrapper(async (req: Request, res: Response) => {
+    const id = req.params.id;
+
+    const payments = await db.orm.public.Payments
+        .select('id', "booking_id", 'amount', 'method', 'provider', 'status', 'paid_at',)
+        .where((i) => i.user_id.eq(id))
+        .orderBy((i) => i.created_at.desc())
+        .all();
+
+
     res.status(StatusCodes.OK).json({
         message: `Payment details fetched successfully`,
+        data: payments
     });
 });
 
