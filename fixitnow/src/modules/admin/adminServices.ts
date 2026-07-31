@@ -30,13 +30,14 @@ export const allCategories = asyncWrapper(async (_: Request, res: Response) => {
 
 export const createServiceCategory = asyncWrapper(async (req: Request, res: Response) => {
     const { name, description, is_active } = req.body
-    if (!name || !description || !is_active) {
+
+    if (!name || !description || is_active === undefined) {
         res.status(StatusCodes.BAD_REQUEST).json({
             message: "All fields are required",
         })
         return;
     }
-    const existingCategory = await db.orm.public.Category.where({ name }).first();
+    const existingCategory = await db.orm.public.Category.where((n) => n.name.ilike(`${name}%`)).first();
     if (existingCategory) {
         res.status(StatusCodes.BAD_REQUEST).json({
             message: "Category already exists",
@@ -56,15 +57,16 @@ export const createServiceCategory = asyncWrapper(async (req: Request, res: Resp
 })
 
 export const updateUserStatus = asyncWrapper(async (req: Request, res: Response) => {
-    const { id, status } = req.body
-    const user = await db.orm.public.User.where({ id }).first();
+    const id = req.params.id;
+    const { status } = req.body;
+    const user = await db.orm.public.User.where((i) => i.id.eq(id)).first();
     if (!user) {
         res.status(StatusCodes.BAD_REQUEST).json({
             message: "User not found",
         })
         return;
     }
-    const updatedUser = await db.orm.public.User.where({ id }).update({ status })
+    const updatedUser = await db.orm.public.User.where((i) => i.id.eq(id)).update({ status })
     res.status(StatusCodes.OK).json({
         message: "User Status Updated Successfully",
         data: updatedUser
