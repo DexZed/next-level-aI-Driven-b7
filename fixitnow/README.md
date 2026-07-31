@@ -1,57 +1,81 @@
-# Express API Starter with Typescript
 
-A JavaScript Express v5 starter template with sensible defaults.
+# FixItNow 
 
-How to use this template:
+#### FixItNow is a backend API for a home services marketplace. 
 
-```sh
-pnpm dlx create-express-api@latest --typescript --directory my-api-name
-```
+#### Uses **Prisma-Next** , which is latest cutting edge prisma api which is still in early access.
+---
+##  Tech Stack
 
-Includes API Server utilities:
+### Backend
+| Technology | Purpose |
+|------------|---------|
+| Node.js + Express | REST API |
+| TypeScript | Type safety  |
+| Postgres + **Prisma-Next** | Database + ORM |
+| JWT | Authentication |
 
-- [morgan](https://www.npmjs.com/package/morgan)
-  - HTTP request logger middleware for node.js
-- [helmet](https://www.npmjs.com/package/helmet)
-  - Helmet helps you secure your Express apps by setting various HTTP headers. It's not a silver bullet, but it can help!
-- [cors](https://www.npmjs.com/package/cors)
-  - CORS is a node.js package for providing a Connect/Express middleware that can be used to enable CORS with various options.
 
-Development utilities:
+## API Endpoints
 
-- [typescript](https://www.npmjs.com/package/typescript)
-  - TypeScript is a language for application-scale JavaScript.
-- [tsx](https://www.npmjs.com/package/tsx)
-  - The easiest way to run TypeScript in Node.js
-- [eslint](https://www.npmjs.com/package/eslint)
-  - ESLint is a tool for identifying and reporting on patterns found in ECMAScript/JavaScript code.
-- [vitest](https://www.npmjs.com/package/vitest)
-  - Next generation testing framework powered by Vite.
-- [zod](https://www.npmjs.com/package/zod)
-  - Validated TypeSafe env with zod schema
-- [supertest](https://www.npmjs.com/package/supertest)
-  - HTTP assertions made easy via superagent.
+### Authentication
 
-## Setup
+| Method | Endpoint             | Description                             |
+| ------ | -------------------- | --------------------------------------- |
+| POST   | `/api/auth/register` | Register new user (customer/technician) |
+| POST   | `/api/auth/login`    | Login user, return JWT                  |
+| GET    | `/api/auth/me`       | Get current authenticated user          |
 
-```
-pnpm install
-```
+### Services & Technicians (Public)
 
-## Lint
+| Method | Endpoint               | Description                                            |
+| ------ | ---------------------- | ------------------------------------------------------ |
+| GET    | `/api/services`        | Get all services with filters (type, location, rating) |
+| GET    | `/api/technicians`     | Get all technicians with filters                       |
+| GET    | `/api/technicians/:id` | Get technician profile with reviews                    |
+| GET    | `/api/categories`      | Get all service categories                             |
 
-```
-pnpm run lint
-```
+### Bookings
 
-## Test
+| Method | Endpoint            | Description                   |
+| ------ | ------------------- | ----------------------------- |
+| POST   | `/api/bookings`     | Create new booking (customer) |
+| GET    | `/api/bookings`     | Get user's bookings           |
+| GET    | `/api/bookings/:id` | Get booking details           |
 
-```
-pnpm run test
-```
+### Payments (Stripe / SSLCommerz)
 
-## Development
+| Method | Endpoint                | Description                                             |
+| ------ | ----------------------- | ------------------------------------------------------- |
+| POST   | `/api/payments/create`  | Create a payment intent/session for an accepted booking |
+| POST   | `/api/payments/confirm` | Confirm/verify payment (webhook or callback)            |
+| GET    | `/api/payments`         | Get user's payment history                              |
+| GET    | `/api/payments/:id`     | Get payment details                                     |
 
-```
-pnpm run dev
-```
+### Technician Management
+
+| Method | Endpoint                       | Description                                     |
+| ------ | ------------------------------ | ----------------------------------------------- |
+| PUT    | `/api/technician/profile`      | Update technician profile                       |
+| PUT    | `/api/technician/availability` | Update availability slots                       |
+| GET    | `/api/technician/bookings`     | Get technician's bookings                       |
+| PATCH  | `/api/technician/bookings/:id` | Update booking status (accept/decline/complete) |
+
+### Reviews
+
+| Method | Endpoint       | Description                          |
+| ------ | -------------- | ------------------------------------ |
+| POST   | `/api/reviews` | Create review (after job completion) |
+| Get   | `/api/reviews/:id` | Get reviews for a particular technician |
+
+### Admin
+
+| Method | Endpoint                | Description                    |
+| ------ | ----------------------- | ------------------------------ |
+| GET    | `/api/admin/users`      | Get all users                  |
+| PATCH  | `/api/admin/users/:id`  | Update user status (ban/unban) |
+| GET    | `/api/admin/bookings`   | Get all bookings               |
+| GET    | `/api/admin/categories` | Get all categories             |
+| POST   | `/api/admin/categories` | Create new service category    |
+
+---
