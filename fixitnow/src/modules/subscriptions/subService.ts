@@ -33,7 +33,7 @@ export const createIntent = asyncWrapper(async (req: RequestExtended, res: Respo
     const paymentIntent = await stripe.paymentIntents.create({
         amount: amountInCents,
         currency: "usd",
-        automatic_payment_methods: { enabled: true },
+        automatic_payment_methods: { enabled: true, allow_redirects: "never" },
         metadata: {
             booking_id: id,
             user_id: userId,
@@ -90,7 +90,7 @@ export const confirmIntent = asyncWrapper(async (req: Request, res: Response) =>
 });
 export const handleWebhook = asyncWrapper(async (req: Request, res: Response) => {
     const sig = req.headers["stripe-signature"];
-    const endpointSecret = env.STRIPE_WEBHOOK_SECRET;
+    const endpointSecret = env.STRIPE_WEBHOOK_SECRET_PRODUCTION;
 
     let event: Stripe.Event;
 
