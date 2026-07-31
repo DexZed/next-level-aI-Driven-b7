@@ -132,31 +132,19 @@ export const handleWebhook = asyncWrapper(async (req: Request, res: Response) =>
 
 export const getPaymentHistory = asyncWrapper(async (req: RequestExtended, res: Response) => {
     const userId = req.user?.id;
-    const payments = await db.orm.public.Payments
-        .select('id', "booking_id", 'amount', 'method', 'provider', 'status', 'paid_at',)
-        .where((i) => i.user_id.eq(userId))
-        .orderBy((i) => i.created_at.desc())
-        .all();
-
+    const plan = db.sql.public.Booking.as("b").innerJoin(db.sql.public.Payments.as("p"), (f, fns) => fns.eq(f.b.id, f.p.booking_id)).select((f) => ({
+        id: f.p.id,
+        booking_id: f.p.booking_id,
+        amount: f.p.amount,
+        method: f.p.method,
+        provider: f.p.provider,
+        status: f.p.status,
+        paid_at: f.p.paid_at,
+    })).where((f, fns) => fns.eq(f.b.user_id, userId)).orderBy((f, fns) => fns.desc(f.p.created_at)).build();
+    const result = await db.runtime().execute(plan);
     res.status(StatusCodes.OK).json({
         message: `Payment history fetched successfully`,
-        data: payments
-    });
-});
-
-export const getPaymentByUserId = asyncWrapper(async (req: Request, res: Response) => {
-    const id = req.params.id;
-
-    const payments = await db.orm.public.Payments
-        .select('id', "booking_id", 'amount', 'method', 'provider', 'status', 'paid_at',)
-        .where((i) => i.user_id.eq(id))
-        .orderBy((i) => i.created_at.desc())
-        .all();
-
-
-    res.status(StatusCodes.OK).json({
-        message: `Payment details fetched successfully`,
-        data: payments
+        data: result
     });
 });
 
