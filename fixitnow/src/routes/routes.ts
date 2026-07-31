@@ -20,7 +20,7 @@ const routes: RouteDefinition[] = [
   { path: "/api/bookings", controller: bookingRouter, middleware: [jwtVerify, userStatus] },
   { path: "/api/technician", controller: technicianRouter, middleware: [jwtVerify, userStatus, verifyRoles("technician")] },
   { path: "/api/reviews", controller: reviewsRouter, middleware: [jwtVerify, userStatus, verifyRoles("customer")] },
-  { path: "/api/admin", controller: adminRouter }
+  { path: "/api/admin", controller: adminRouter, middleware: [jwtVerify, userStatus(), verifyRoles("admin")] }
 ];
 
 export default routes;
