@@ -2,10 +2,12 @@ import { asyncWrapper } from "../../lib/asyncWrapper.js";
 import type { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { db } from "../../prisma/db.js";
+import { RequestExtended } from "../../interfaces/index.js";
 
-export const createReviews = asyncWrapper(async (req: Request, res: Response) => {
-    const { user_id, technician_id, booking_id, rating, comment } = req.body;
-    if (!user_id || !technician_id || !booking_id || !rating || !comment) {
+export const createReviews = asyncWrapper(async (req: RequestExtended, res: Response) => {
+    const user_id = req.user?.id
+    const { technician_id, booking_id, rating, comment } = req.body;
+    if (!user_id || !technician_id || !booking_id || !rating) {
         res.status(StatusCodes.BAD_REQUEST).json({
             message: "Missing required fields"
         });
@@ -15,7 +17,7 @@ export const createReviews = asyncWrapper(async (req: Request, res: Response) =>
         technician_id,
         booking_id,
         rating,
-        comment
+        comment: comment || ""
     })
     res.status(StatusCodes.OK).json({
         message: "Success, review created",
