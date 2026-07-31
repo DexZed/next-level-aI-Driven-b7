@@ -1,0 +1,969 @@
+{
+  "info": {
+    "_postman_id": "3d53ba0f-8960-40eb-b29e-75128aeecac1",
+    "name": "FixItNow",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "40537462",
+    "_collection_link": "https://go.postman.co/collection/40537462-3d53ba0f-8960-40eb-b29e-75128aeecac1?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Public",
+      "item": [
+        {
+          "name": "Get all services with filters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{publicUrl}}/api/services",
+              "host": [
+                "{{publicUrl}}"
+              ],
+              "path": [
+                "api",
+                "services"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Ac",
+                  "description": "Serchable names are : Pipe Leak Repair, Drain Unclogging, Switchboard Repair, AC Servicing",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all technicians with filters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{publicUrl}}/api/technicians",
+              "host": [
+                "{{publicUrl}}"
+              ],
+              "path": [
+                "api",
+                "technicians"
+              ],
+              "query": [
+                {
+                  "key": "ratingAvg",
+                  "value": "4",
+                  "description": "Raitng scale1-5",
+                  "disabled": true
+                },
+                {
+                  "key": "city",
+                  "value": null,
+                  "description": "Dhaka, Khulna, Chittagong",
+                  "disabled": true
+                },
+                {
+                  "key": "is_available",
+                  "value": "false",
+                  "description": "Boolean",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get technician profile with id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{publicUrl}}/api/technicians/:id",
+              "host": [
+                "{{publicUrl}}"
+              ],
+              "path": [
+                "api",
+                "technicians",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "242e1099-46a1-4374-8478-906c8a62c780"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all service categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{publicUrl}}/api/categories",
+              "host": [
+                "{{publicUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register new user (customer/technician)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\":\"Pain\",\r\n    \"email\":\"pain@gmail.com\",\r\n    \"password\":\"pain1234\",\r\n    \"role\": \"customer\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{publicUrl}}/api/auth/register",
+              "host": [
+                "{{publicUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login user, return JWT",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json().data;\r",
+                  "if (res.accessToken) {\r",
+                  "    pm.environment.set(\"access_token\", res.accessToken);\r",
+                  "} else {\r",
+                  "    console.log(\"No access token found\");\r",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \r\n    \"email\":\"pain@gmail.com\",\r\n    \"password\":\"pain1234\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{publicUrl}}/api/auth/login",
+              "host": [
+                "{{publicUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get current authenticated user",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{publicUrl}}/api/auth/me",
+              "host": [
+                "{{publicUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Bookings",
+      "item": [
+        {
+          "name": "Create new booking (customer)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"user_id\":\"6db7e3ce-7411-4222-9802-1b3386c7d635\",\r\n    \"technician_id\":\"f9553dd5-c19a-4a0a-a5eb-5898ccf6c0dc\",\r\n    \"service_id\":\"155ce7ac-390d-42b3-9e75-ca271791f007\",\r\n    \"total_price\":100\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{publicUrl}}/api/bookings",
+              "host": [
+                "{{publicUrl}}"
+              ],
+              "path": [
+                "api",
+                "bookings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get user's bookings",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\":\"6db7e3ce-7411-4222-9802-1b3386c7d635\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{publicUrl}}/api/bookings",
+              "host": [
+                "{{publicUrl}}"
+              ],
+              "path": [
+                "api",
+                "bookings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get booking details",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{publicUrl}}/api/bookings/:id",
+              "host": [
+                "{{publicUrl}}"
+              ],
+              "path": [
+                "api",
+                "bookings",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "a1c40702-b4dd-4e0c-9f7a-b27ab965647b"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Technicians",
+      "item": [
+        {
+          "name": "Update technician profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\":\"c1ad2b52-dacc-4455-bda5-4bb64587fce7\",\r\n    \"bio\":\"{{$randomLoremWords}}\",\r\n    \"city\":\"rajshahi\",\r\n    \"is_available\":false,\r\n    \"services\":[\r\n        {\r\n        \"service_id\":\"155ce7ac-390d-42b3-9e75-ca271791f007\",\r\n        \"price\":100\r\n    },\r\n    {\r\n        \"service_id\":\"908203c4-fa4a-4caf-b217-0f96fa266cc0\",\r\n        \"price\":2500\r\n    }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{publicUrl}}/api/technician/profile",
+              "host": [
+                "{{publicUrl}}"
+              ],
+              "path": [
+                "api",
+                "technician",
+                "profile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update availability slots",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\":\"c1ad2b52-dacc-4455-bda5-4bb64587fce7\",\r\n    \"is_available\":true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{publicUrl}}/api/technician/availability",
+              "host": [
+                "{{publicUrl}}"
+              ],
+              "path": [
+                "api",
+                "technician",
+                "availability"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get technician's bookings",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{publicUrl}}/api/technician/bookings",
+              "host": [
+                "{{publicUrl}}"
+              ],
+              "path": [
+                "api",
+                "technician",
+                "bookings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update booking status (accept/decline/complete)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{publicUrl}}/api/technician/bookings/:id",
+              "host": [
+                "{{publicUrl}}"
+              ],
+              "path": [
+                "api",
+                "technician",
+                "bookings",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Get all users",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{publicUrl}}/api/admin/users",
+              "host": [
+                "{{publicUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update user status (ban/unban)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"status\":\"banned\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{publicUrl}}/api/admin/users/:id",
+              "host": [
+                "{{publicUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "users",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "c1ad2b52-dacc-4455-bda5-4bb64587fce7"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all bookings",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\":\"c1ad2b52-dacc-4455-bda5-4bb64587fce7\",\r\n    \"is_available\":true\r\n}"
+            },
+            "url": {
+              "raw": "{{publicUrl}}/api/admin/bookings",
+              "host": [
+                "{{publicUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "bookings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all categories",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\":\"c1ad2b52-dacc-4455-bda5-4bb64587fce7\",\r\n    \"is_available\":true\r\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "categories"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create new service category",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\":\"Burglary\",\r\n    \"description\":\"{{$randomLoremWords}}\",\r\n    \"is_active\":false\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "categories"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Subscription",
+      "item": [
+        {
+          "name": "Create a payment intent/session for an accepted booking",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json().data;\r",
+                  "if (res.paymentIntentId || res.bookingId) {\r",
+                  "    pm.environment.set(\"paymentIntentId\", res.paymentIntentId);\r",
+                  "    pm.environment.set(\"bookingId\", res.bookingId);\r",
+                  "\r",
+                  "} else {\r",
+                  "    console.log(\"No access paymentIntentId found\");\r",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\":\"a1c40702-b4dd-4e0c-9f7a-b27ab965647b\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{publicUrl}}/api/payments/create",
+              "host": [
+                "{{publicUrl}}"
+              ],
+              "path": [
+                "api",
+                "payments",
+                "create"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Confirm/verify payment (webhook or callback)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"bookingId\":\"{{bookingId}}\",\r\n    \"paymentIntentId\": \"{{paymentIntentId}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{publicUrl}}/api/payments/confirm",
+              "host": [
+                "{{publicUrl}}"
+              ],
+              "path": [
+                "api",
+                "payments",
+                "confirm"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get user's payment history",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{publicUrl}}/api/payments",
+              "host": [
+                "{{publicUrl}}"
+              ],
+              "path": [
+                "api",
+                "payments"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get payment details",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{publicUrl}}/api/payments/:id",
+              "host": [
+                "{{publicUrl}}"
+              ],
+              "path": [
+                "api",
+                "payments",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Reviews",
+      "item": [
+        {
+          "name": "Post a review",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"technician_id\":\"f9553dd5-c19a-4a0a-a5eb-5898ccf6c0dc\",\r\n    \"booking_id\":\"a1c40702-b4dd-4e0c-9f7a-b27ab965647b\",\r\n    \"rating\":3,\r\n    \"comment\":\"{{$randomLoremWords}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{publicUrl}}/api/reviews",
+              "host": [
+                "{{publicUrl}}"
+              ],
+              "path": [
+                "api",
+                "reviews"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Review for particular technician",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{publicUrl}}/api/reviews/:id",
+              "host": [
+                "{{publicUrl}}"
+              ],
+              "path": [
+                "api",
+                "reviews",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "f9553dd5-c19a-4a0a-a5eb-5898ccf6c0dc"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{publicUrl}}/",
+          "host": [
+            "{{publicUrl}}"
+          ],
+          "path": [
+            ""
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": ""
+    },
+    {
+      "key": "publicUrl",
+      "value": ""
+    },
+    {
+      "key": "extra",
+      "value": ""
+    }
+  ]
+}
