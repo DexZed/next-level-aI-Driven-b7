@@ -175,7 +175,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \r\n    \"email\":\"pain@gmail.com\",\r\n    \"password\":\"pain1234\"\r\n}",
+              "raw": "{\r\n    \r\n    \"email\":\"peak@gmail.com\",\r\n    \"password\":\"Peak1234\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -791,41 +791,6 @@
               "path": [
                 "api",
                 "payments"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Get payment details",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{access_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{publicUrl}}/api/payments/:id",
-              "host": [
-                "{{publicUrl}}"
-              ],
-              "path": [
-                "api",
-                "payments",
-                ":id"
-              ],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": ""
-                }
               ]
             }
           },
