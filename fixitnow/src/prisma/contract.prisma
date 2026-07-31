@@ -42,7 +42,7 @@ model Service {
   category_id        Uuid              
   bookings           Booking[]?
   technicianServices TechnicianService[]?
-  category           Category            @relation(fields: [category_id], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  category           Category            @relation(fields: [category_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
  @@map("services")
  @@index([name])
  @@index([category_id])
@@ -73,7 +73,7 @@ model Technician {
   bookings           Booking[]?
   reviews            Review[]?
   technicianServices TechnicianService[]?
-  user               User                @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  user               User                @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
  @@map("technicians")
  @@index([is_available, ratingAvg])
 }
@@ -84,15 +84,15 @@ model Booking {
   technician_id    Uuid     
   service_id    Uuid   
   status       Status     @default(Pending)
-  scheduled_At  DateTime  @default(now()) 
+  scheduled_at  DateTime  @default(now()) 
   total_price   Float      
   created_at    DateTime @default(now()) 
   updated_at    DateTime @default(now()) 
-  paymentses   Payments[]?
+  payments   Payments[]?
   reviews      Review[]?
-  service      Service    @relation(fields: [service_id], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  technician   Technician @relation(fields: [technician_id], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  user         User       @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  service      Service    @relation(fields: [service_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  technician   Technician @relation(fields: [technician_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user         User       @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([user_id, status])
  @@map("bookings")
@@ -106,7 +106,7 @@ model Payments {
   provider  String
   status    Status     @default(Pending)
   paid_at    DateTime? @default(now()) 
-  booking   Booking    @relation(fields: [booking_id], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  booking   Booking    @relation(fields: [booking_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
    @@map("payments")
 }
 
@@ -119,9 +119,9 @@ model Review {
   rating       Int
   comment      String?
   created_at    DateTime  @default(now()) 
-  booking      Booking    @relation(fields: [booking_id], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  technician   Technician @relation(fields: [technician_id], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  user         User       @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  booking      Booking    @relation(fields: [booking_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  technician   Technician @relation(fields: [technician_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user         User       @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([technician_id])
  @@map("reviews")
@@ -132,8 +132,8 @@ model TechnicianService {
   technician_id Uuid     
   service_id    Uuid   
   price         Float      @default(0.0)  
-  service      Service    @relation(fields: [service_id], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  technician   Technician @relation(fields: [technician_id], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  service      Service    @relation(fields: [service_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  technician   Technician @relation(fields: [technician_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   @@unique([technician_id, service_id])
   @@map("technicianServices")
 }

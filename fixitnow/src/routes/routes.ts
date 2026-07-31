@@ -18,9 +18,9 @@ type RouteDefinition = {
 const routes: RouteDefinition[] = [
   { path: "/", controller: publicRouter },
   { path: "/api/auth", controller: authRouter },
-  { path: "/api/bookings", controller: bookingRouter, middleware: [jwtVerify, userStatus] },
-  { path: "/api/technician", controller: technicianRouter, middleware: [jwtVerify, userStatus, verifyRoles("technician")] },
-  { path: "/api/reviews", controller: reviewsRouter, middleware: [jwtVerify, userStatus, verifyRoles("customer")] },
+  { path: "/api/bookings", controller: bookingRouter, middleware: [jwtVerify, userStatus()] },
+  { path: "/api/technician", controller: technicianRouter, middleware: [jwtVerify, userStatus(), verifyRoles("technician")] },
+  { path: "/api/reviews", controller: reviewsRouter, middleware: [jwtVerify, userStatus(), verifyRoles("customer")] },
   { path: "/api/admin", controller: adminRouter, middleware: [jwtVerify, userStatus(), verifyRoles("admin")] },
   {
     path: "/api/payments",

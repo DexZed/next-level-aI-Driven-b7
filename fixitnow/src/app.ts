@@ -23,7 +23,7 @@ export default class App {
 
   private initMiddlewares(): void {
     this.app.use((req, res, next) => {
-      if (req.path === "/api/v1/stripe/webhook") {
+      if (req.path === "/api/payments/webhook") {
         next();
       } else {
         express.json()(req, res, next);

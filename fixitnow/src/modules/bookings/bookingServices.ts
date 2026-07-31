@@ -4,7 +4,7 @@ import { StatusCodes } from "http-status-codes";
 import { db } from "../../prisma/db.js";
 
 export const createBooking = asyncWrapper(async (req: Request, res: Response) => {
-    const { user_id, technician_id, service_id, total_price, scheduled_at } = req.body;
+    const { user_id, technician_id, service_id, total_price } = req.body;
 
     if (!user_id || !technician_id || !service_id || !total_price) {
         res.status(StatusCodes.BAD_REQUEST).json({
@@ -21,7 +21,7 @@ export const createBooking = asyncWrapper(async (req: Request, res: Response) =>
         });
     }
 
-    const isTechnicianAvailable = await db.orm.public.Technician.select("id").where({
+    const isTechnicianAvailable = await db.orm.public.Technician.select("id", "user_id").where({
         id: technician_id,
     }).first()
     if (!isTechnicianAvailable) {
@@ -34,7 +34,7 @@ export const createBooking = asyncWrapper(async (req: Request, res: Response) =>
         technician_id: technician_id,
         service_id: service_id,
         total_price: total_price,
-        scheduled_at: scheduled_at ?? new Date(),
+        scheduled_at: new Date(),
     })
     res.status(StatusCodes.OK).json({
         message: "Successfully created booking",
@@ -43,7 +43,7 @@ export const createBooking = asyncWrapper(async (req: Request, res: Response) =>
 });
 
 export const getBookingsByUser = asyncWrapper(async (req: Request, res: Response) => {
-    const id = req.params.id;
+    const id = req.body.id;
 
     if (!id) {
         res.status(StatusCodes.BAD_REQUEST).json({

@@ -30,7 +30,7 @@ import type {
 } from '@prisma-next/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'sha256:f670f09851b46e55fee33c156eaf8b60965bf9d6c988f5a1bb2103c36a8a2f31'>;
+  StorageHashBase<'sha256:17fdd3f7149ab83a96543936b92d109ec1b80f7581627e950480e96b3e2e3eb5'>;
 export type ExecutionHash =
   ExecutionHashBase<'sha256:7399e89eb2d7a287c67e393e7f419f7d2277a52cf7c3cbcad517c27d7c99a295'>;
 export type ProfileHash =
@@ -51,7 +51,7 @@ export type FieldOutputTypes = {
       readonly technician_id: CodecTypes['pg/uuid@1']['output'];
       readonly service_id: CodecTypes['pg/uuid@1']['output'];
       readonly status: CodecTypes['pg/text@1']['output'];
-      readonly scheduled_At: CodecTypes['pg/timestamptz@1']['output'];
+      readonly scheduled_at: CodecTypes['pg/timestamptz@1']['output'];
       readonly total_price: CodecTypes['pg/float8@1']['output'];
       readonly created_at: CodecTypes['pg/timestamptz@1']['output'];
       readonly updated_at: CodecTypes['pg/timestamptz@1']['output'];
@@ -120,7 +120,7 @@ export type FieldInputTypes = {
       readonly technician_id: CodecTypes['pg/uuid@1']['input'];
       readonly service_id: CodecTypes['pg/uuid@1']['input'];
       readonly status: CodecTypes['pg/text@1']['input'];
-      readonly scheduled_At: CodecTypes['pg/timestamptz@1']['input'];
+      readonly scheduled_at: CodecTypes['pg/timestamptz@1']['input'];
       readonly total_price: CodecTypes['pg/float8@1']['input'];
       readonly created_at: CodecTypes['pg/timestamptz@1']['input'];
       readonly updated_at: CodecTypes['pg/timestamptz@1']['input'];
@@ -231,7 +231,7 @@ type ContractBase = Omit<
                     readonly value: DefaultLiteralValue<'pg/text@1', 'pending'>;
                   };
                 };
-                readonly scheduled_At: {
+                readonly scheduled_at: {
                   readonly nativeType: 'timestamptz';
                   readonly codecId: 'pg/timestamptz@1';
                   readonly nullable: false;
@@ -830,7 +830,7 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
-              readonly scheduled_At: {
+              readonly scheduled_at: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/timestamptz@1' };
               };
@@ -848,7 +848,7 @@ type ContractBase = Omit<
               };
             };
             readonly relations: {
-              readonly paymentses: {
+              readonly payments: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
                   readonly model: 'Payments';
@@ -910,7 +910,7 @@ type ContractBase = Omit<
                 readonly technician_id: { readonly column: 'technician_id' };
                 readonly service_id: { readonly column: 'service_id' };
                 readonly status: { readonly column: 'status' };
-                readonly scheduled_At: { readonly column: 'scheduled_At' };
+                readonly scheduled_at: { readonly column: 'scheduled_at' };
                 readonly total_price: { readonly column: 'total_price' };
                 readonly created_at: { readonly column: 'created_at' };
                 readonly updated_at: { readonly column: 'updated_at' };
