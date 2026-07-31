@@ -22,3 +22,11 @@ export const createReviews = asyncWrapper(async (req: Request, res: Response) =>
         data: result
     })
 })
+export const getReviews = asyncWrapper(async (req: Request, res: Response) => {
+    const id = req.params.id as string;
+    const result = await db.orm.public.Review.select("id", "user_id", "technician_id", "booking_id", "rating", "comment").where((i) => i.user_id.eq(id)).all()
+    res.status(StatusCodes.OK).json({
+        message: "Success, reviews fetched",
+        data: result
+    })
+})
